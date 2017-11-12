@@ -11,8 +11,7 @@
   any_errors_fatal: true
   roles:
     - 'base'
-    - 'cadvisor'
-    - 'node_exporter'
-    - 'awsmon'
+    - 'go'
+    - 'vim'
     - 'docker'
 

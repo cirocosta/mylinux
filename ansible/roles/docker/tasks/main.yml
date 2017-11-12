@@ -1,0 +1,9 @@
+---
+- name: 'install docker'
+  when: 'docker_install_docker'
+  script: 'install.sh'
+
+- name: 'prepare default daemon configuration'
+  copy:
+    src: 'daemon.json'
+    dest: '/etc/docker/daemon.json'
