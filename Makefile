@@ -1,7 +1,7 @@
 VERSION 								:=	$(shell cat ./VERSION)
-DOCKER_IMAGE 						:=	cirocosta/linux
+DOCKER_IMAGE 						:=	cirocosta/ubuntu
 DOCKER_TEST_CONTAINER 	:=	test_ansible_container
-DOCKER_PRIVATE_KEY 			:=	$(shell realpath ./docker/keys/key.rsa)
+DOCKER_PRIVATE_KEY 			:=	$(shell realpath ./keys/key.rsa)
 ANSIBLE_ROLES_PATH 			:=	$(shell realpath ./ansible/roles)
 
 
@@ -27,11 +27,6 @@ build-vagrant-image:
 		vagrant package --output wedeploy-$(VERSION).box
 	cd ./vagrant/build && \
 		vagrant box add wedeploy-$(VERSION) ./wedeploy-$(VERSION).box
-
-
-build-docker-image:
-	cd ./docker && \
-		docker build -t $(DOCKER_IMAGE) .
 
 
 run-docker-container:
@@ -60,7 +55,7 @@ provision-docker-container:
 			playbooks/test-docker.yml
 
 
-test-ansible: | build-docker-image run-docker-container provision-docker-container
+test-ansible: | run-docker-container provision-docker-container
 
 
 .PHONY: test-ansible
