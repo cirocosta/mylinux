@@ -26,6 +26,7 @@ build-vagrant-image:
 
 run-docker-container:
 	docker rm -f $(DOCKER_TEST_CONTAINER) || true
+	sudo chown root:root $(SSH_PUBLIC_KEY)
 	docker run \
 		--privileged \
 		--security-opt seccomp=unconfined \
