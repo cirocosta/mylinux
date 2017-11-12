@@ -1,0 +1,18 @@
+---
+- hosts: 'default'
+  any_errors_fatal: true
+  become: true
+  gather_facts: false
+  roles:
+    - 'bootstrap'
+
+- hosts: 'default'
+  become: true
+  any_errors_fatal: true
+  roles:
+    - 'base'
+    - 'cadvisor'
+    - 'node_exporter'
+    - 'awsmon'
+    - 'docker'
+

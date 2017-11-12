@@ -1,0 +1,25 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+$script = <<SCRIPT
+echo "ubuntu:admin" | chpasswd
+SCRIPT
+
+Vagrant.configure(2) do |config|
+  config.vm.box = "ubuntu/zesty64"
+  config.vm.hostname = "zesty"
+  config.vm.box_check_update = false
+  config.vm.synced_folder ".", "/vagrant", disabled: true
+
+  config.vm.provision "ansible" do |ansible|
+    ansible.playbook = "../../ansible/playbooks/provision-vagrant.yml"
+    ansible.config_file = "../../ansible/ansible.cfg"
+  end
+
+  config.vm.provision "shell", inline: $script
+
+  config.vm.provider "virtualbox" do |v|
+    v.memory = 1024
+    v.cpus = 1
+  end
+end

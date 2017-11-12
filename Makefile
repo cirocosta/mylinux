@@ -1,15 +1,10 @@
 VERSION 								:=	$(shell cat ./VERSION)
 DOCKER_IMAGE 						:=	cirocosta/ubuntu
 DOCKER_TEST_CONTAINER 	:=	test_ansible_container
-DOCKER_PRIVATE_KEY 			:=	$(shell realpath ./keys/key.rsa)
+SSH_PRIVATE_KEY 				:=	$(shell realpath ./keys/key.rsa)
+SSH_PUBLIC_KEY 					:=	$(shell realpath ./keys/key.rsa.pub)
 ANSIBLE_ROLES_PATH 			:=	$(shell realpath ./ansible/roles)
-
-
-ami:
-	cd ./aws && \
-		packer build \
-			-var ansible_roles_path=$(ANSIBLE_ROLES_PATH) \
-			./packer.json
+VAGRANT_IMAGE 					:=	mylinux-$(VERSION)
 
 
 run-vagrant-build-machine:
@@ -24,9 +19,9 @@ provision-vagrant-build-machine:
 
 build-vagrant-image: 
 	cd ./vagrant/build && \
-		vagrant package --output wedeploy-$(VERSION).box
+		vagrant package --output $(VAGRANT_IMAGE).box
 	cd ./vagrant/build && \
-		vagrant box add wedeploy-$(VERSION) ./wedeploy-$(VERSION).box
+		vagrant box add $(VAGRANT_IMAGE) $(VAGRANT_IMAGE).box
 
 
 run-docker-container:
@@ -37,6 +32,7 @@ run-docker-container:
 		--tmpfs /run \
 		--tmpfs /run/lock \
 		--volume /sys/fs/cgroup:/sys/fs/cgroup:ro \
+		--volume $(SSH_PUBLIC_KEY):/root/.ssh/authorized_keys:ro \
 		--detach \
 		--publish 2222:22 \
 		--publish 9100:9100 \
@@ -47,11 +43,11 @@ run-docker-container:
 
 
 provision-docker-container:
-	chmod 400 $(DOCKER_PRIVATE_KEY)
+	chmod 400 $(SSH_PRIVATE_KEY)
 	cd ./ansible && \
 		ansible-playbook \
 			--inventory-file=./configuration/hosts \
-			--private-key=$(DOCKER_PRIVATE_KEY) \
+			--private-key=$(SSH_PRIVATE_KEY) \
 			playbooks/test-docker.yml
 
 
