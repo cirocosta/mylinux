@@ -21,7 +21,7 @@
 
 - name: 'add vimrc'
   copy:
-    src: 'templates/.vimrc.j2'
+    src: '.vimrc'
     dest: '{{ user_home }}/.vimrc'
     owner: '{{ user }}'
     group: '{{ user }}'
