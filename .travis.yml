@@ -7,7 +7,7 @@ before_install:
   - './.travis/main.sh'
 
 script:
-  - 'make test-ansible'
+  - 'sudo make test-ansible'
 
 notifications:
   email: false
