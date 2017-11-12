@@ -1,0 +1,14 @@
+---
+- hosts: 'docker'
+  any_errors_fatal: true
+  gather_facts: false
+  roles:
+    - 'bootstrap'
+
+- hosts: 'docker'
+  any_errors_fatal: true
+  roles:
+    - 'base'
+    - 'go'
+    - 'vim'
+

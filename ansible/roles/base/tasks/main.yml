@@ -1,0 +1,28 @@
+---
+- name: 'base dependencies'
+  apt:
+    update_cache: 'yes'
+    cache_valid_time: 3600
+    name: '{{ item }}'
+    state: 'installed'
+  with_items:
+    - 'curl'
+    - 'python'
+    - 'python-pip'
+    - 'vim'
+    - 'jq' 
+    - 'silversearcher-ag'
+    - 'tree'
+    - 'sysstat'
+    - 'htop'
+    - 'nmap'
+    - 'iotop'
+    - 'dnsutils'
+    - 'bc'
+    - 'build-essential'
+    - 'cmake'
+
+- name: 'upgrade dependencies'
+  apt:
+    upgrade: 'yes'
+

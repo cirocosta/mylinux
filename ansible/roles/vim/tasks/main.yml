@@ -1,0 +1,40 @@
+---
+- name: 'create .vim contents'
+  file:
+    path: '{{ item }}'
+    group: '{{ user }}'
+    owner: '{{ user }}'
+    recurse: 'yes'
+    state: 'directory'
+  with_items:
+    - '{{ user_home }}/.vim/autoload'
+    - '{{ user_home }}/.vim/bundle'
+    - '{{ user_home }}/.vim_runtime/temp_dirs/undodir'
+
+- name: 'install pathogen'
+  get_url:
+    url: 'https://tpo.pe/pathogen.vim'
+    dest: '{{ user_home }}/.vim/autoload'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+    mode: 0755
+
+- name: 'add vimrc'
+  copy:
+    src: 'templates/.vimrc.j2'
+    dest: '{{ user_home }}/.vimrc'
+    owner: '{{ user }}'
+    group: '{{ user }}'
+
+- name: 'clone plugins'
+  git:
+    repo: '{{ item.url }}'
+    dest: '{{ user_home }}/.vim/bundle/{{ item.name }}'
+    force: 'yes'
+  register: 'git_result'
+  changed_when: "git_result.after|default('after') != git_result.before|default('before')"
+  with_items:
+    - name: 'nerdtree'
+      url: 'https://github.com/scrooloose/nerdtree.git'
+    - name: 'editorconfig-vim'
+      url: 'https://github.com/editorconfig/editorconfig-vim.git'
