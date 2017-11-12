@@ -38,3 +38,11 @@
       url: 'https://github.com/scrooloose/nerdtree.git'
     - name: 'editorconfig-vim'
       url: 'https://github.com/editorconfig/editorconfig-vim.git'
+    - name: 'YouCompleteMe'
+      url: 'https://github.com/Valloric/YouCompleteMe'
+
+- name: 'install ycmd'
+  command: './install.py --go-completer --clang-completer'
+  args:
+    chdir: '{{ user_home }}/.vim/bundle/YouCompleteMe'
+
