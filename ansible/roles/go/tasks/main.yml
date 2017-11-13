@@ -13,5 +13,5 @@
 
 - name: 'Set go env vars for all users'
   copy:
-    src: 'set-env.sh'
+    src: 'go-set-env.sh'
     dest: '/etc/profile.d'

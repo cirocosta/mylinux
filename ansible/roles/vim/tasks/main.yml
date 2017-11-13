@@ -43,6 +43,12 @@
 
 - name: 'install ycmd'
   command: './install.py --go-completer --clang-completer'
+  environment: 
+    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"
   args:
     chdir: '{{ user_home }}/.vim/bundle/YouCompleteMe'
 
+- name: 'Set go env vars for all users'
+  copy:
+    src: 'vim-set-env.sh'
+    dest: '/etc/profile.d'
