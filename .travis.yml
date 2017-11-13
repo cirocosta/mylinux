@@ -9,6 +9,13 @@ before_install:
 script:
   - 'sudo make test-ansible'
 
+after_success:
+  - 'make commit-docker-image'
+  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
+      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
+      make push-docker-image ;
+    fi
+
 notifications:
   email: false
 

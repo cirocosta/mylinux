@@ -1,10 +1,12 @@
-VERSION 								:=	$(shell cat ./VERSION)
-DOCKER_IMAGE 						:=	cirocosta/ubuntu
-DOCKER_TEST_CONTAINER 	:=	test_ansible_container
-SSH_PRIVATE_KEY 				:=	$(shell realpath ./keys/key.rsa)
-SSH_PUBLIC_KEY 					:=	$(shell realpath ./keys/key.rsa.pub)
-ANSIBLE_ROLES_PATH 			:=	$(shell realpath ./ansible/roles)
-VAGRANT_IMAGE 					:=	mylinux-$(VERSION)
+VERSION 								:= $(shell cat ./VERSION)
+DOCKER_BASE_IMAGE 			:= cirocosta/ubuntu
+DOCKER_FINAL_IMAGE 			:= cirocosta/mylinux
+DOCKER_CONTAINER 				:= test_ansible_container
+COMMIT_SHA							:= $(shell git rev-parse --short HEAD)
+SSH_PRIVATE_KEY 				:= $(shell realpath ./keys/key.rsa)
+SSH_PUBLIC_KEY 					:= $(shell realpath ./keys/key.rsa.pub)
+ANSIBLE_ROLES_PATH 			:= $(shell realpath ./ansible/roles)
+VAGRANT_IMAGE 					:= mylinux-$(VERSION)
 
 
 run-vagrant-build-machine:
@@ -24,8 +26,20 @@ build-vagrant-image:
 		vagrant box add $(VAGRANT_IMAGE) $(VAGRANT_IMAGE).box
 
 
+commit-docker-image:
+	docker commit $(DOCKER_CONTAINER) $(DOCKER_FINAL_IMAGE):$(VERSION)
+	docker tag $(DOCKER_FINAL_IMAGE):$(VERSION) $(DOCKER_FINAL_IMAGE):$(VERSION)-$(COMMIT_SHA)
+	docker tag $(DOCKER_FINAL_IMAGE):$(VERSION) $(DOCKER_FINAL_IMAGE):latest
+
+
+push-docker-image:
+	docker push $(DOCKER_FINAL_IMAGE):$(VERSION) 
+	docker push $(DOCKER_FINAL_IMAGE):$(VERSION)-$(COMMIT_SHA)
+	docker push $(DOCKER_FINAL_IMAGE):latest
+
+
 run-docker-container:
-	docker rm -f $(DOCKER_TEST_CONTAINER) || true
+	docker rm -f $(DOCKER_CONTAINER) || true
 	sudo chown root:root $(SSH_PUBLIC_KEY)
 	docker run \
 		--privileged \
@@ -38,8 +52,8 @@ run-docker-container:
 		--publish 2222:22 \
 		--publish 9100:9100 \
 		--publish 9101:9101 \
-		--name $(DOCKER_TEST_CONTAINER) \
-		$(DOCKER_IMAGE)
+		--name $(DOCKER_CONTAINER) \
+		$(DOCKER_BASE_IMAGE)
 	sleep 3
 
 
@@ -53,6 +67,5 @@ provision-docker-container:
 
 
 test-ansible: | run-docker-container provision-docker-container
-
 
 .PHONY: test-ansible
