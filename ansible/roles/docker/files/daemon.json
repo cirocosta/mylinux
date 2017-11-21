@@ -8,5 +8,5 @@
     "max-concurrent-uploads": 30,
     "metrics-addr": "0.0.0.0:9102",
     "storage-driver": "overlay2",
-    "useland-proxy": false
+    "userland-proxy": false
 }
