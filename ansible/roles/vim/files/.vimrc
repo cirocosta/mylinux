@@ -78,6 +78,7 @@ nnoremap <silent> <expr> ^ ScreenMovement("^")
 nnoremap <silent> <expr> $ ScreenMovement("$")
 
 
+let c_no_curly_error=1
 let g:NERDTreeWinPos = "left"
 let NERDTreeShowHidden=1
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
