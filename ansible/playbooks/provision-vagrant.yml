@@ -9,6 +9,13 @@
 - hosts: 'default'
   become: true
   any_errors_fatal: true
+  tasks:
+    - name: 'resize the fs to the whole disk'
+      command: 'resize2fs /dev/sda1'
+
+- hosts: 'default'
+  become: true
+  any_errors_fatal: true
   roles:
     - 'base'
     - 'go'

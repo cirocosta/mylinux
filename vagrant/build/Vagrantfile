@@ -1,19 +1,11 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-$script = <<SCRIPT
-echo "ubuntu:admin" | chpasswd
-SCRIPT
-
 Vagrant.configure(2) do |config|
-  config.ssh.username = "ubuntu"
-
   config.vm.box = "ubuntu/artful64"
   config.vm.box_check_update = false
 
   config.vm.hostname = "artful"
-
-  config.vm.network "forwarded_port", guest: 443, host: 443
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
@@ -24,8 +16,6 @@ Vagrant.configure(2) do |config|
     ansible.playbook = "../../ansible/playbooks/provision-vagrant.yml"
     ansible.config_file = "../../ansible/ansible.cfg"
   end
-
-  config.vm.provision "shell", inline: $script
 
   config.vm.synced_folder ".", "/vagrant", disabled: true
 end
