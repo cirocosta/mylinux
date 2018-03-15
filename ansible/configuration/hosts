@@ -1,4 +1,4 @@
-docker_container ansible_ssh_host=localhost ansible_ssh_port=2222 ansible_ssh_user=root
+docker_container ansible_host=ansible_container
 
 [docker]
 docker_container

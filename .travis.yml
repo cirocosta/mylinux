@@ -7,7 +7,7 @@ before_install:
   - './.travis/main.sh'
 
 script:
-  - 'sudo make test-ansible'
+  - 'make build-container'
 
 after_success:
   - 'make commit-docker-image'

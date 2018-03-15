@@ -1,23 +1,39 @@
-mylinux - Vagrant box, Dockerfile and ansible scripts that provision
-          my Linux setup.
+mylinux 
 
-Testing:
-
-  Testing is performed via docker:
-      - creates a docker contaneiner which simulates an Ubuntu:zesty
-        setup which becomes the target of a local ansible process.
-
-  In order to spawn the execution of the test, run:
-
-      make test-ansible
+        Vagrant box, Docker container and ansible scripts that provision
+        my Linux setup.
 
 
-Running:
-  
-  Docker:
-      - docker run --name inst --detach --privileged cirocosta/mylinux
-      - docker exec -it inst /bin/bash
+USAGE
 
-      
+        - Creating a vagrant box:
+                
+                make run-varant-build-machine
+                make build-vagrant-image
 
 
+        - Creating a docker image:
+
+                make run-docker-container
+                make provision-docker-container
+                make commit-docker-image
+
+
+        - Running the Docker container:
+
+                docker run -it cirocosta/mylinux
+
+
+        - Running the Vagrant box:
+
+                Vagrant.configure(2) do |config|
+                  config.ssh.username = "ubuntu"
+
+                  config.vm.box = "mylinux-v0.0.1"
+                  config.vm.box_check_update = false
+
+                  config.vm.provider "virtualbox" do |v|
+                    v.memory = 2048
+                    v.cpus = 3
+                  end
+                end

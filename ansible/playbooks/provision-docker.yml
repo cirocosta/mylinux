@@ -2,10 +2,12 @@
 - hosts: 'docker'
   any_errors_fatal: true
   gather_facts: false
+  connection: 'docker'
   roles:
     - 'bootstrap'
 
 - hosts: 'docker'
+  connection: 'docker'
   any_errors_fatal: true
   roles:
     - 'base'
