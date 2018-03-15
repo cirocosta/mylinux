@@ -9,6 +9,9 @@
 - hosts: 'docker'
   connection: 'docker'
   any_errors_fatal: true
+  vars:
+    user: 'root'
+    user_home: '/home/root'
   roles:
     - 'base'
     - 'go'
