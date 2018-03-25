@@ -7,16 +7,14 @@ before_install:
   - './.travis/main.sh'
 
 script:
-  - 'make build-container'
+  - 'make image'
 
-after_success:
-  - 'make commit-docker-image'
-  - if [[ "$TRAVIS_BRANCH" == "master" ]]; then
-      docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD ;
-      make push-docker-image ;
-    fi
+deploy:
+  provider: 'script'
+  script: 'make push'
+  on:
+    branch: 'master'
 
 notifications:
   email: false
-
 

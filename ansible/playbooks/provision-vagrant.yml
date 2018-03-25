@@ -1,4 +1,11 @@
 ---
+# Provisions an already-running vagrant machine
+# by SSHing into it.
+# 
+# Using `hosts: default` we let Vagrant properly
+# set the variables needed for the host connection
+# so we don't need to care about that.
+
 - hosts: 'default'
   any_errors_fatal: true
   become: true

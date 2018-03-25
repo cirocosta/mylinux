@@ -4,6 +4,6 @@
     "image": "cirocosta/mylinux:v0.0.1-1f2780b",
     "memory": 2048,
     "volumes": {
-      "mount": "/mnt"
+        "mount": "/mnt"
     }
 }

@@ -1,13 +1,18 @@
 ---
+# Provisions a docker container that is already
+# running by `exec`ing into its namespace and
+# then running the commands as described by the
+# roles locally.
+
 - hosts: 'docker'
   any_errors_fatal: true
   gather_facts: false
-  connection: 'docker'
+  connection: 'local'
   roles:
     - 'bootstrap'
 
 - hosts: 'docker'
-  connection: 'docker'
+  connection: 'local'
   any_errors_fatal: true
   vars:
     user: 'root'
@@ -16,4 +21,3 @@
     - 'base'
     - 'go'
     - 'vim'
-

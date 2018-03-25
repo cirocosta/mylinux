@@ -14,9 +14,7 @@ USAGE
 
         - Creating a docker image:
 
-                make run-docker-container
-                make provision-docker-container
-                make commit-docker-image
+                make image
 
 
         - Running the Docker container:
