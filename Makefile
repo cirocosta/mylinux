@@ -1,6 +1,5 @@
 VERSION             := $(shell cat ./VERSION)
 COMMIT_SHA          := $(shell git rev-parse --short HEAD)
-ANSIBLE_ROLES_PATH  := $(shell realpath ./ansible/roles)
 VAGRANT_IMAGE       := mylinux-$(VERSION)
 DOCKER_FINAL_IMAGE  := cirocosta/mylinux
 
