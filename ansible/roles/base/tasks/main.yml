@@ -22,6 +22,8 @@
     - 'sysstat'
     - 'tree'
     - 'vim'
+    - 'clang-format'
+    - 'valgrind'
 
 - name: 'upgrade dependencies'
   apt:
