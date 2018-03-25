@@ -27,7 +27,13 @@ image:
 	docker tag $(DOCKER_FINAL_IMAGE):$(VERSION) $(DOCKER_FINAL_IMAGE):latest
 
 
-push:
+login:
+	docker login \
+		--username $(DOCKER_USERNAME) \
+		--password $(DOCKER_PASSWORD)
+
+
+push: login
 	docker push $(DOCKER_FINAL_IMAGE):$(VERSION) 
 	docker push $(DOCKER_FINAL_IMAGE):$(VERSION)-$(COMMIT_SHA)
 	docker push $(DOCKER_FINAL_IMAGE):latest
