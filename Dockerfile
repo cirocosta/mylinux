@@ -17,5 +17,5 @@ RUN set -x && \
 
 
 RUN set -x && \
-  apt-get purge --auto-remove ansible
+  apt-get purge --auto-remove ansible -y
 
