@@ -15,7 +15,7 @@
   register: 'add_repository_key'
   ignore_errors: true
 
-- name: 'add Docker repository'
+- name: 'add docker repository'
   apt_repository:
     repo: '{{ docker_apt_repository }}'
     state: 'present'
@@ -23,7 +23,7 @@
 
 - name: 'install docker'
   apt:
-    name: 'docker-ce={{ docker_version }}'
+    name: 'docker-ce'
     state: 'present'
 
 - name: 'enable docker systemd service'

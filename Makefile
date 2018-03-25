@@ -3,8 +3,6 @@ DOCKER_BASE_IMAGE   := ubuntu:artful
 DOCKER_FINAL_IMAGE  := cirocosta/mylinux
 DOCKER_CONTAINER    := ansible_container
 COMMIT_SHA          := $(shell git rev-parse --short HEAD)
-SSH_PRIVATE_KEY     := $(shell realpath ./keys/key.rsa)
-SSH_PUBLIC_KEY      := $(shell realpath ./keys/key.rsa.pub)
 ANSIBLE_ROLES_PATH  := $(shell realpath ./ansible/roles)
 VAGRANT_IMAGE       := mylinux-$(VERSION)
 

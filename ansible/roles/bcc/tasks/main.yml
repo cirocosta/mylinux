@@ -1,0 +1,36 @@
+---
+- name: 'install bcc dependencies'
+  apt:
+    name: 'linux-headers-{{ ansible_kernel }}'
+    state: 'present'
+    update_cache: 'yes'
+
+- name: 'install bcc repo apt key'
+  apt_key:
+    keyserver: 'keyserver.ubuntu.com'
+    id: 'D4284CDD'
+    state: 'present'
+  register: 'add_repository_key'
+  ignore_errors: true
+
+- name: 'add bcc repository'
+  apt_repository:
+    repo: 'deb https://repo.iovisor.org/apt/{{ ansible_distribution_release | lower }} {{ ansible_distribution_release | lower }} main'
+    state: 'present'
+    update_cache: 'yes'
+
+- name: 'install bcc-tools'
+  apt:
+    name: 'bcc-tools'
+    state: 'present'
+
+- name: 'install bcc examples'
+  apt:
+    name: 'libbcc-examples'
+    state: 'present'
+
+- name: 'set bcc-tools env vars for all users'
+  copy:
+    src: 'bcc-set-env.sh'
+    dest: '/etc/profile.d'
+
