@@ -8,6 +8,7 @@
   with_items:
     - 'bc'
     - 'build-essential'
+    - 'clang-format'
     - 'cmake'
     - 'curl'
     - 'dnsutils'
@@ -21,9 +22,8 @@
     - 'silversearcher-ag'
     - 'sysstat'
     - 'tree'
-    - 'vim'
-    - 'clang-format'
     - 'valgrind'
+    - 'vim'
 
 - name: 'upgrade dependencies'
   apt:
