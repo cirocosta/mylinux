@@ -19,3 +19,5 @@ RUN set -x && \
 RUN set -x && \
   apt-get purge --auto-remove ansible -y
 
+VOLUME /mnt/direct
+
