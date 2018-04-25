@@ -28,9 +28,9 @@ image:
 
 
 login:
-	docker login \
+	echo $(DOCKER_PASSWORD) | docker login \
 		--username $(DOCKER_USERNAME) \
-		--password $(DOCKER_PASSWORD)
+		--password-stdin
 
 
 push: login
