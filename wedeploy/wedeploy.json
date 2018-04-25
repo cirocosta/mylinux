@@ -1,6 +1,6 @@
 {
     "cpu": 1,
     "id": "mylinux",
-    "image": "cirocosta/mylinux:v0.0.1-3b6e063",
+    "image": "cirocosta/mylinux:v0.0.2",
     "memory": 1024
 }
