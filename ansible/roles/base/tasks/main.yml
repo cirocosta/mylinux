@@ -17,6 +17,7 @@
     - 'iotop'
     - 'jq' 
     - 'lsof'
+    - 'net-tools'
     - 'nmap'
     - 'python'
     - 'python-pip'
