@@ -15,6 +15,7 @@
     - 'git' 
     - 'htop'
     - 'iotop'
+    - 'inetutils-traceroute'
     - 'ipvsadm'
     - 'jq' 
     - 'lsof'
