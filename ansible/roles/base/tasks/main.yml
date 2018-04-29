@@ -16,6 +16,7 @@
     - 'htop'
     - 'iotop'
     - 'iproute2'
+    - 'iptables'
     - 'inetutils-traceroute'
     - 'ipvsadm'
     - 'jq' 
