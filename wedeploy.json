@@ -1,7 +1,6 @@
 {
     "cpu": 4,
     "id": "mylinux",
-    "image": "cirocosta/mylinux:v0.0.2",
     "memory": 2048,
     "volumes": {
         "mount": "/mnt/shared"
