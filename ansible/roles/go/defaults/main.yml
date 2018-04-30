@@ -1,4 +1,4 @@
 ---
-go_tarball: "go1.10.linux-amd64.tar.gz"
+go_tarball: "go1.10.1.linux-amd64.tar.gz"
 go_download_location: "https://storage.googleapis.com/golang/{{ go_tarball }}"
-go_tarball_checksum: "sha256:b5a64335f1490277b585832d1f6c7f8c6c11206cba5cd3f771dcb87b98ad1a33"
+go_tarball_checksum: "sha256:72d820dec546752e5a8303b33b009079c15c2390ce76d67cf514991646c6127b"
