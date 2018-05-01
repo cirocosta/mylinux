@@ -6,14 +6,14 @@
 # set the variables needed for the host connection
 # so we don't need to care about that.
 
-- hosts: 'default'
+- hosts: 'aws-ami'
   any_errors_fatal: true
   become: true
   gather_facts: false
   roles:
     - 'bootstrap'
 
-- hosts: 'default'
+- hosts: 'aws-ami'
   become: true
   any_errors_fatal: true
   roles:
