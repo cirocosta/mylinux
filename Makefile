@@ -2,6 +2,7 @@ VERSION             := $(shell cat ./VERSION)
 COMMIT_SHA          := $(shell git rev-parse --short HEAD)
 VAGRANT_IMAGE       := mylinux-$(VERSION)
 DOCKER_FINAL_IMAGE  := cirocosta/mylinux
+ANSIBLE_ROLES_PATH  := $(shell realpath ./ansible/roles)
 
 
 run-vagrant-build-machine:
@@ -12,6 +13,14 @@ run-vagrant-build-machine:
 provision-vagrant-build-machine:
 	cd ./vagrant/build && \
 		vagrant provision
+
+
+build-aws-ami:
+	cd ./aws && \
+		packer build \
+			-var ansible_roles_path=$(ANSIBLE_ROLES_PATH) \
+			-var version=$(VERSION) \
+			./packer.json
 
 
 build-vagrant-image: 

@@ -1,0 +1,38 @@
+{
+    "builders": [
+        {
+            "ami_name": "mylinux-{{user `version`}}",
+            "instance_type": "t2.micro",
+            "name": "mylinux",
+            "profile": "beld",
+            "source_ami_filter": {
+                "filters": {
+                    "name": "ubuntu/images/*ubuntu-bionic-18.04-amd64-server-*",
+                    "root-device-type": "ebs",
+                    "virtualization-type": "hvm"
+                },
+                "most_recent": true,
+                "owners": [
+                    "099720109477"
+                ]
+            },
+            "ssh_username": "ubuntu",
+            "tags": {
+                "Name": "mylinux-{{user `version`}}",
+                "OS_Version": "Ubuntu",
+                "Release": "Bionic"
+            },
+            "type": "amazon-ebs"
+        }
+    ],
+    "provisioners": [
+        {
+            "ansible_env_vars": [
+                "ANSIBLE_ROLES_PATH={{ user `ansible_roles_path` }}"
+            ],
+            "host_alias": "aws-ami",
+            "playbook_file": "../ansible/playbooks/provision-ami.yml",
+            "type": "ansible"
+        }
+    ]
+}
