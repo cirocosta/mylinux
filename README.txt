@@ -1,7 +1,7 @@
 mylinux 
 
-        Vagrant box, Docker container and ansible scripts that provision
-        my Linux setup.
+        Vagrant box, Docker container, AWS AMI, Terraform configuration 
+        and ansible scripts that provision my Linux setup.
 
 
 USAGE
@@ -15,6 +15,17 @@ USAGE
         - Creating a docker image:
 
                 make image
+
+
+        - Creating an AWS AMI
+
+                make build-aws-ami
+
+
+        - Running an AWS instance with the last mylinux
+          AMI build (account independent):
+
+                make run aws-instance
 
 
         - Running the Docker container:
@@ -35,3 +46,9 @@ USAGE
                     v.cpus = 3
                   end
                 end
+
+
+        - Deploying mylinux container to WeDeploy
+
+                we deploy -p $project_name
+
