@@ -1,7 +1,7 @@
 {
     "builders": [
         {
-            "ami_name": "mylinux-{{user `version`}}",
+            "ami_name": "mylinux-{{ user `version` }}-{{ timestamp }}",
             "instance_type": "t2.micro",
             "name": "mylinux",
             "profile": "beld",
@@ -17,11 +17,6 @@
                 ]
             },
             "ssh_username": "ubuntu",
-            "tags": {
-                "Name": "mylinux-{{user `version`}}",
-                "OS_Version": "Ubuntu",
-                "Release": "Bionic"
-            },
             "type": "amazon-ebs"
         }
     ],

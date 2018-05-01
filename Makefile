@@ -5,6 +5,11 @@ DOCKER_FINAL_IMAGE  := cirocosta/mylinux
 ANSIBLE_ROLES_PATH  := $(shell realpath ./ansible/roles)
 
 
+run-aws-instance:
+	cd ./aws && \
+		terraform apply
+
+
 run-vagrant-build-machine:
 	cd ./vagrant/build && \
 		vagrant up
@@ -20,7 +25,7 @@ build-aws-ami:
 		packer build \
 			-var ansible_roles_path=$(ANSIBLE_ROLES_PATH) \
 			-var version=$(VERSION) \
-			./packer.json
+			./ami.json
 
 
 build-vagrant-image: 
@@ -31,9 +36,15 @@ build-vagrant-image:
 
 
 image:
-	docker build -t $(DOCKER_FINAL_IMAGE):$(VERSION) .
-	docker tag $(DOCKER_FINAL_IMAGE):$(VERSION) $(DOCKER_FINAL_IMAGE):$(VERSION)-$(COMMIT_SHA)
-	docker tag $(DOCKER_FINAL_IMAGE):$(VERSION) $(DOCKER_FINAL_IMAGE):latest
+	docker build \
+		-t $(DOCKER_FINAL_IMAGE):$(VERSION) \
+		.
+	docker tag \
+		$(DOCKER_FINAL_IMAGE):$(VERSION) \
+		$(DOCKER_FINAL_IMAGE):$(VERSION)-$(COMMIT_SHA)
+	docker tag \
+		$(DOCKER_FINAL_IMAGE):$(VERSION) \
+		$(DOCKER_FINAL_IMAGE):latest
 
 
 login:
