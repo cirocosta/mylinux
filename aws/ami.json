@@ -2,7 +2,7 @@
     "builders": [
         {
             "ami_name": "mylinux-{{ user `version` }}-{{ timestamp }}",
-            "instance_type": "t2.micro",
+            "instance_type": "t2.medium",
             "name": "mylinux",
             "profile": "beld",
             "source_ami_filter": {

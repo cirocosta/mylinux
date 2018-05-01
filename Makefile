@@ -7,7 +7,8 @@ ANSIBLE_ROLES_PATH  := $(shell realpath ./ansible/roles)
 
 run-aws-instance:
 	cd ./aws && \
-		terraform apply
+		terraform apply \
+			-var "ami-version=$(VERSION)"
 
 
 run-vagrant-build-machine:

@@ -1,4 +1,8 @@
-*.retry
 .vagrant/
+.terraform/
+
+*.retry
 *.log
 *.box
+*.tfstate
+*.tfstate.backup
