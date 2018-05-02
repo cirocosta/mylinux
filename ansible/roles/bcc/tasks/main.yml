@@ -15,7 +15,7 @@
 
 - name: 'add bcc repository'
   apt_repository:
-    repo: 'deb https://repo.iovisor.org/apt/{{ ansible_distribution_release | lower }} {{ ansible_distribution_release | lower }} main'
+    repo: 'deb https://repo.iovisor.org/apt/{{ bcc_apt_repository_distribution }} {{ bcc_apt_repository_distribution_release }} {{ bcc_apt_repository_release_channel }}'
     state: 'present'
     update_cache: 'yes'
 

@@ -1,0 +1,4 @@
+---
+bcc_apt_repository_distribution: '{{ ansible_distribution|lower }}'
+bcc_apt_repository_distribution_release: '{{ ansible_distribution_release }}'
+bcc_apt_repository_release_channel: 'main'
