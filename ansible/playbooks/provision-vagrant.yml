@@ -23,6 +23,8 @@
 - hosts: 'default'
   become: true
   any_errors_fatal: true
+  vars:
+    docker_apt_repository_distribution_release: 'artful'
   roles:
     - 'base'
     - 'go'
