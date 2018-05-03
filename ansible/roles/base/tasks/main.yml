@@ -21,6 +21,7 @@
     - 'inetutils-traceroute'
     - 'ipvsadm'
     - 'jq' 
+    - 'libtool'
     - 'lsof'
     - 'net-tools'
     - 'nmap'
