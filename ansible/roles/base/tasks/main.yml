@@ -6,6 +6,7 @@
     name: '{{ item }}'
     state: 'present'
   with_items:
+    - 'autoconf'
     - 'bc'
     - 'build-essential'
     - 'clang-format'
