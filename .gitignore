@@ -5,4 +5,5 @@
 *.log
 *.box
 *.tfstate
+*.tfstate.lock.info
 *.tfstate.backup

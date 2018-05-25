@@ -11,6 +11,12 @@ run-aws-instance:
 			-var "ami-version=$(VERSION)"
 
 
+destroy-aws-instance:
+	cd ./aws && \
+		terraform destroy \
+			-var "ami-version=$(VERSION)"
+
+
 run-vagrant-build-machine:
 	cd ./vagrant/build && \
 		vagrant up
