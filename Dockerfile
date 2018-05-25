@@ -22,7 +22,7 @@ RUN set -x && \
 
 
 ENV \
-  GOPATH=$HOME/go
+  GOPATH=$HOME/go \
   PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 
