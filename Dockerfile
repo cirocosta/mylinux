@@ -17,7 +17,13 @@ RUN set -x && \
 
 
 RUN set -x && \
-  apt-get purge --auto-remove ansible -y
+  apt-get purge \
+    --auto-remove ansible -y
+
+
+ENV \
+  GOPATH=$HOME/go
+  PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+
 
 VOLUME /mnt/direct
-
