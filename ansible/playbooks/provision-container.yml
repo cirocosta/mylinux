@@ -21,5 +21,4 @@
     - 'base'
     - 'go'
     - 'dep'
-    - 'bcc'
     - 'vim'
