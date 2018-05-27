@@ -15,3 +15,4 @@
   copy:
     src: 'go-set-env.sh'
     dest: '/etc/profile.d'
+

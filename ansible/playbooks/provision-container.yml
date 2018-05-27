@@ -20,4 +20,6 @@
   roles:
     - 'base'
     - 'go'
+    - 'dep'
+    - 'bcc'
     - 'vim'

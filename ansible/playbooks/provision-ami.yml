@@ -22,6 +22,7 @@
   roles:
     - 'base'
     - 'go'
+    - 'dep'
     - 'vim'
     - 'docker'
     - 'bcc'
