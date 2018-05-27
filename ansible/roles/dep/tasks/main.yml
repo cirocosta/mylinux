@@ -3,3 +3,4 @@
   get_url:
     url: '{{ dep_download_location }}'
     dest: '/usr/local/bin/dep'
+    mode: 0755
