@@ -27,6 +27,14 @@ provision-vagrant-build-machine:
 		vagrant provision
 
 
+provision-vostro:
+	cd ./ansible && \
+		ansible-playbook \
+			--ask-pass \
+			--ask-become-pass \
+			./playbooks/provision-vostro.yml
+
+
 build-aws-ami:
 	cd ./aws && \
 		packer build \

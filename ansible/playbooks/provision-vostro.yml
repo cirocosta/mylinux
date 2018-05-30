@@ -1,0 +1,30 @@
+---
+# Provisions an already-running vagrant machine
+# by SSHing into it.
+# 
+# Using `hosts: default` we let Vagrant properly
+# set the variables needed for the host connection
+# so we don't need to care about that.
+
+- hosts: 'vostro'
+  any_errors_fatal: true
+  become: true
+  gather_facts: false
+  roles:
+    - 'bootstrap'
+
+- hosts: 'vostro'
+  become: true
+  any_errors_fatal: true
+  vars:
+    docker_apt_repository_distribution_release: 'artful'
+    bcc_apt_repository_distribution_release: 'artful'
+    user: 'cirocosta'
+    user_home: '/home/cirocosta'
+  roles:
+    - 'base'
+    - 'go'
+    - 'dep'
+    - 'vim'
+    - 'docker'
+    - 'bcc'
