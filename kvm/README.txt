@@ -8,20 +8,20 @@
 
 2.  Install packer
 
-  curl \
-    -SL \
-    -o packer.zip \
-    https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
-  unzip ./packer.zip
-  sudo mv ./packer /usr/local/bin/packer
+curl \
+  -SL \
+  -o packer.zip \
+  https://releases.hashicorp.com/packer/1.2.4/packer_1.2.4_linux_amd64.zip
+unzip ./packer.zip
+mv ./packer /usr/local/bin/packer
 
 
 3.  Install dependencies
-  apt install -y \
-    qemu-kvm \
-    libvirt-bin \
-    bridge-utils \
-    cloud-utils
+apt install -y \
+  qemu-kvm \
+  libvirt-bin \
+  bridge-utils \
+  cloud-utils
 
 
 4.  Create a cloud-init configuration file
@@ -42,8 +42,5 @@ chpasswd:
 
 6. Run Packer
 
-  See ./packer.json
+  packer build ./packer.json
 
-7. 
-
-  

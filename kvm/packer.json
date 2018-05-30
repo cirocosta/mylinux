@@ -37,5 +37,15 @@
             "use_default_display": true,
             "vm_name": "ubuntu"
         }
+    ],
+    "provisioners": [
+        {
+            "ansible_env_vars": [
+                "ANSIBLE_ROLES_PATH={{ user `ansible_roles_path` }}"
+            ],
+            "host_alias": "kvm",
+            "playbook_file": "../ansible/playbooks/provision-kvm.yml",
+            "type": "ansible"
+        }
     ]
 }
