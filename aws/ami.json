@@ -23,7 +23,7 @@
     "provisioners": [
         {
             "ansible_env_vars": [
-                "ANSIBLE_ROLES_PATH={{ user `ansible_roles_path` }}"
+                "ANSIBLE_ROLES_PATH=../ansible/roles"
             ],
             "host_alias": "aws-ami",
             "playbook_file": "../ansible/playbooks/provision-ami.yml",
