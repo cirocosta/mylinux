@@ -53,6 +53,7 @@ build-vagrant-image:
 build-kvm-image:
 	cd ./kvm && \
 		packer build \
+			-var ansible_roles_path=$(ANSIBLE_ROLES_PATH) \
 			./packer.json
 
 
