@@ -1,5 +1,6 @@
 .vagrant/
 .terraform/
+kvm/image/
 
 *.retry
 *.log
