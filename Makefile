@@ -50,6 +50,13 @@ build-vagrant-image:
 		vagrant box add $(VAGRANT_IMAGE) $(VAGRANT_IMAGE).box
 
 
+build-kvm-image:
+	cd ./kvm && \
+		packer build \
+			-var ansible_roles_path=$(ANSIBLE_ROLES_PATH) \
+			./packer.json
+
+
 image:
 	docker build \
 		-t $(DOCKER_FINAL_IMAGE):$(VERSION) \
