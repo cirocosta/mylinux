@@ -1,8 +1,9 @@
 ---
-# Provisions an already-running vagrant machine
-# by SSHing into it.
+# Provisions an already-running AWS machine
+# by SSHing into it and performing the necessary
+# mutations.
 # 
-# Using `hosts: default` we let Vagrant properly
+# Using `hosts: aws-ami` we let Packer properly
 # set the variables needed for the host connection
 # so we don't need to care about that.
 
