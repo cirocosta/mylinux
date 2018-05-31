@@ -1,6 +1,6 @@
 ---
 - debug:
-  msg: 'using user {{ user }} with home directory {{ user_home }}'
+    msg: 'using user {{ user }} with home directory {{ user_home }}'
 
 - name: 'create .vim contents'
   file:
