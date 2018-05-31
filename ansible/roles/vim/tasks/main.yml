@@ -1,4 +1,7 @@
 ---
+- debug:
+  msg: 'using user {{ user }} with home directory {{ user_home }}'
+
 - name: 'create .vim contents'
   file:
     path: '{{ item }}'

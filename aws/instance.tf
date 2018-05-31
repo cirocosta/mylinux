@@ -43,6 +43,13 @@ resource "aws_security_group" "allow-ssh-and-egress" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  ingress {
+    from_port   = 30000
+    to_port     = 30000
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -55,8 +62,12 @@ resource "aws_security_group" "allow-ssh-and-egress" {
   }
 }
 
+# TYPE    VCPU  MEM   $/10hrs
+# ---------------------------
+# micro   1     1     0.19
+# medium  2     4     0.75
 resource "aws_instance" "main" {
-  instance_type = "t2.micro"
+  instance_type = "t2.medium"
   ami           = "${data.aws_ami.mylinux.id}"
   key_name      = "${aws_key_pair.main.id}"
 

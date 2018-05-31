@@ -1,0 +1,5 @@
+---
+user: 'ubuntu'
+user_home: '/home/ubuntu'
+minikube_version: 'v0.27.0'
+minikube_url: 'https://storage.googleapis.com/minikube/releases/{{ minikube_version }}/minikube-linux-amd64'

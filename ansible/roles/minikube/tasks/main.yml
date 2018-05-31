@@ -1,0 +1,23 @@
+---
+- name: 'download minikube binary'
+  get_url:
+    url: '{{ minikube_url }}'
+    dest: '/usr/local/bin/minikube'
+    mode: 0755
+
+- debug:
+  msg: 'using user {{ user }} with home directory {{ user_home }}'
+
+- name: 'create kube directory'
+  file:
+    path: '{{ user_home }}/.kube'
+    owner: '{{ user }}'
+    mode: 0755
+    recurse: 'yes'
+    state: 'directory'
+
+- name: 'create kube config file'
+  file:
+    path: '{{ user_home }}/.kube/config'
+    owner: '{{ user }}'
+    mode: 0755

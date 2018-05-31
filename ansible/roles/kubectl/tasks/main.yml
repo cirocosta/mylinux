@@ -1,0 +1,6 @@
+---
+- name: 'download kubectl binary'
+  get_url:
+    url: '{{ kubectl_url }}'
+    dest: '/usr/local/bin/kubectl'
+    mode: 0755
