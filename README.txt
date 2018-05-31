@@ -38,7 +38,7 @@ USAGE
                 Vagrant.configure(2) do |config|
                   config.ssh.username = "ubuntu"
 
-                  config.vm.box = "mylinux-v0.0.1"
+                  config.vm.box = "mylinux-v0.0.5"
                   config.vm.box_check_update = false
 
                   config.vm.provider "virtualbox" do |v|
