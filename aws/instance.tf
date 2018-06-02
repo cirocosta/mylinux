@@ -71,6 +71,12 @@ resource "aws_instance" "main" {
   ami           = "${data.aws_ami.mylinux.id}"
   key_name      = "${aws_key_pair.main.id}"
 
+  root_block_device = {
+    volume_type           = "gp2"
+    volume_size           = "50"
+    delete_on_termination = true
+  }
+
   vpc_security_group_ids = [
     "${aws_security_group.allow-ssh-and-egress.id}",
   ]
