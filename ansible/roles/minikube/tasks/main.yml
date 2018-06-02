@@ -22,3 +22,8 @@
     owner: '{{ user }}'
     mode: 0755
     state: 'touch'
+
+- name: 'set minikube env vars for all users'
+  copy:
+    src: 'minikube-set-env.sh'
+    dest: '/etc/profile.d'

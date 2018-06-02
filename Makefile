@@ -27,6 +27,12 @@ provision-vagrant-build-machine:
 		vagrant provision
 
 
+ssh-into-aws: AWS_IP=$(shell \
+	terraform output -state=./aws/terraform.tfstate public-ip)
+ssh-into-aws:
+	ssh -i ./aws/keys/key.rsa ubuntu@$(AWS_IP)
+
+
 provision-minikube-aws: AWS_IP=$(shell \
 	terraform output -state=./aws/terraform.tfstate public-ip)
 provision-minikube-aws: AWS_KEY=$(shell \
