@@ -4,3 +4,21 @@
     url: '{{ kubectl_url }}'
     dest: '/usr/local/bin/kubectl'
     mode: 0755
+
+- name: 'create kube directory'
+  file:
+    path: '{{ user_home }}/.kube'
+    owner: '{{ user }}'
+    mode: 0755
+    recurse: 'yes'
+    state: 'directory'
+
+- name: 'generate kubectl bash completion'
+  command: '/bin/bash -c "kubectl completion bash > {{ user_home }}/.kube/completion.bash.inc"'
+  args:
+    creates: '{{ user_home }}/.kube/completion.bash.inc'
+
+- name: 'initialize kubectl completion at startup'
+  template:
+    src: 'kubectl-init-completion.sh'
+    dest: '/etc/profile.d'
