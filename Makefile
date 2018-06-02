@@ -27,6 +27,20 @@ provision-vagrant-build-machine:
 		vagrant provision
 
 
+provision-minikube-aws: AWS_IP=$(shell \
+	terraform output -state=./aws/terraform.tfstate public-ip)
+provision-minikube-aws: AWS_KEY=$(shell \
+	realpath ./aws/keys/key.rsa)
+provision-minikube-aws:
+	echo "aws ansible_host=$(AWS_IP) ansible_user=ubuntu" \
+		> /tmp/ansible-hosts
+	cd ./ansible && \
+		ansible-playbook \
+			--private-key=$(AWS_KEY) \
+			--inventory /tmp/ansible-hosts \
+			./playbooks/provision-minikube.yml
+
+
 provision-vostro:
 	cd ./ansible && \
 		ansible-playbook \

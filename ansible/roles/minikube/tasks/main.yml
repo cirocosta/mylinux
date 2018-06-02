@@ -21,3 +21,4 @@
     path: '{{ user_home }}/.kube/config'
     owner: '{{ user }}'
     mode: 0755
+    state: 'touch'
