@@ -1,0 +1,40 @@
+apiVersion: 'v1'
+kind: 'Pod'
+metadata:
+  name: 'mylinux'
+spec:
+
+  volumes:
+    - name: "direct-per-node"
+      hostPath:
+        path: "/var/lib/mylinux/direct"
+        type: "DirectoryOrCreate"
+    - name: "direct-ephemeral"
+      emptyDir: {}
+
+  containers:
+    - image: 'cirocosta/mylinux:v0.0.5'
+      name: 'mylinux'
+      tty: true
+      resources:
+        requests:
+          cpu: "0.5"
+          memory: "256Mi"
+      volumeMounts:
+        - mountPath: "/mnt/direct-per-node"
+          name: "direct-per-node"
+        - mountPath: "/mnt/direct-ephemeral"
+          name: "direct-ephemeral"
+      livenessProbe:
+        exec:
+          command:
+            - 'uptime'
+        failureThreshold: 3
+        initialDelaySeconds: 3
+        periodSeconds: 10
+        successThreshold: 1
+        timeoutSeconds: 10
+      ports:
+        - containerPort: 8080
+          name: 'http'
+          protocol: 'TCP'

@@ -30,6 +30,7 @@
     - 'python-pip'
     - 'silversearcher-ag'
     - 'strace'
+    - 'socat'
     - 'sysstat'
     - 'tree'
     - 'unzip'
