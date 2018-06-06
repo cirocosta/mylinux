@@ -2,6 +2,10 @@ variable "region" {
   default = "sa-east-1"
 }
 
+variable "instance-type" {
+  default = "t2.medium"
+}
+
 variable "profile" {
   default = "beld"
 }

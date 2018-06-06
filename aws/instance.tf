@@ -62,18 +62,19 @@ resource "aws_security_group" "allow-ssh-and-egress" {
   }
 }
 
-# TYPE    VCPU  MEM   $/10hrs
+# TYPE       VCPU  MEM   $/10hrs
 # ---------------------------
-# micro   1     1     0.19
-# medium  2     4     0.75
+# t2.micro   1     1     0.19
+# t2.medium  2     4     0.75
+# c5.xlarge	 4	   8     2.62
 resource "aws_instance" "main" {
-  instance_type = "t2.medium"
+  instance_type = "${var.instance-type}"
   ami           = "${data.aws_ami.mylinux.id}"
   key_name      = "${aws_key_pair.main.id}"
 
   root_block_device = {
     volume_type           = "gp2"
-    volume_size           = "50"
+    volume_size           = "25"
     delete_on_termination = true
   }
 
