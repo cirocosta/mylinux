@@ -15,6 +15,7 @@
     - 'dnsutils'
     - 'git' 
     - 'htop'
+    - 'ifupdown'
     - 'inetutils-traceroute'
     - 'iotop'
     - 'iproute2'

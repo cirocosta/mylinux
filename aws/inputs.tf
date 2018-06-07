@@ -1,9 +1,9 @@
 variable "region" {
-  default = "sa-east-1"
+  default = "us-east-1"
 }
 
 variable "instance-type" {
-  default = "t2.medium"
+  default = "c5.xlarge"
 }
 
 variable "profile" {
