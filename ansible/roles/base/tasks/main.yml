@@ -8,11 +8,13 @@
   with_items:
     - 'autoconf'
     - 'bc'
+    - 'bison'
     - 'build-essential'
     - 'clang-format'
     - 'cmake'
     - 'curl'
     - 'dnsutils'
+    - 'flex'
     - 'git' 
     - 'htop'
     - 'ifupdown'
