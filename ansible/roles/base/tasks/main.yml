@@ -27,6 +27,7 @@
     - 'lsof'
     - 'net-tools'
     - 'nmap'
+    - 'pkg-config'
     - 'python'
     - 'python-pip'
     - 'silversearcher-ag'
