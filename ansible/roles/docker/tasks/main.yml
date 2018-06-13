@@ -33,7 +33,7 @@
     enabled: '{{ docker_enable_service }}'
 
 - name: 'prepare default daemon configuration'
-  copy:
+  template:
     src: 'daemon.json'
     dest: '/etc/docker/daemon.json'
 
