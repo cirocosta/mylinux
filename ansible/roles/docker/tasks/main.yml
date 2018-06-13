@@ -30,7 +30,7 @@
   service:
     name: 'docker'
     state: 'started'
-    enabled: 'yes'
+    enabled: '{{ docker_enable_service }}'
 
 - name: 'prepare default daemon configuration'
   copy:
