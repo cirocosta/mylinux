@@ -44,7 +44,7 @@
     - name: 'YouCompleteMe'
       url: 'https://github.com/Valloric/YouCompleteMe'
 
-- name: 'install ycmd'
+- name: 'install ycm'
   command: './install.py --go-completer --clang-completer'
   environment: 
     PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"

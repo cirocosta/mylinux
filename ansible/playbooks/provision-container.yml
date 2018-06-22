@@ -16,7 +16,7 @@
   any_errors_fatal: true
   vars:
     user: 'root'
-    user_home: '/home/root'
+    user_home: '/root'
   roles:
     - 'base'
     - 'go'
