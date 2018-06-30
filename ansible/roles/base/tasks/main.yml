@@ -26,7 +26,7 @@
     - 'ipvsadm'
     - 'jq' 
     - 'libtool'
-    - 'linux-headers-{{ ansible_kernel }}'
+    - 'linux-headers-generic'
     - 'lsof'
     - 'net-tools'
     - 'nmap'
