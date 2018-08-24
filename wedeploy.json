@@ -1,8 +1,0 @@
-{
-    "cpu": 8,
-    "id": "mylinux",
-    "memory": 6144,
-    "volumes": {
-        "mount": "/mnt/shared"
-    }
-}
