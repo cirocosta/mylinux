@@ -2,7 +2,7 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "mylinux-v0.0.5"
+  config.vm.box = "mylinux-v0.0.7"
   config.vm.box_check_update = false
 
   config.vm.hostname = "bionic"
