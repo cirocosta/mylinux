@@ -61,3 +61,6 @@ let NERDTreeShowHidden=1
 
 " Show bottom-right numbers
 set ruler
+
+" Set the proper encoding for ycmd to work
+set encoding=utf-8
