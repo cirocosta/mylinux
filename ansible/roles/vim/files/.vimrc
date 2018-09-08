@@ -39,6 +39,7 @@ set noswapfile
 
 " Highlight the search results.
 set hlsearch
+set incsearch
 
 " Do not show preview option
 set completeopt-=preview
