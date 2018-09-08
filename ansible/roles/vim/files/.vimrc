@@ -25,9 +25,6 @@ nmap <cr> :w<cr>
 " Clear highlights on space.
 nmap <space> :noh<cr>
 
-" Open NERDTree whenever pressing minus (hyphen)
-nmap - :NERDTree<cr>
-
 " Shorthand for window switching.
 map <C-j> <C-W>j
 map <C-k> <C-W>k
@@ -55,9 +52,6 @@ set linebreak
 
 " Ignore case when searching
 set ignorecase
-
-" Make NERDTree show hidden files
-let NERDTreeShowHidden=1
 
 " Show bottom-right numbers
 set ruler

@@ -37,10 +37,10 @@
   register: 'git_result'
   changed_when: "git_result.after|default('after') != git_result.before|default('before')"
   with_items:
-    - name: 'nerdtree'
-      url: 'https://github.com/scrooloose/nerdtree.git'
+    - name: 'vim-vinegar'
+      url: 'https://github.com/tpope/vim-vinegar'
     - name: 'editorconfig-vim'
-      url: 'https://github.com/editorconfig/editorconfig-vim.git'
+      url: 'https://github.com/editorconfig/editorconfig-vim'
     - name: 'YouCompleteMe'
       url: 'https://github.com/Valloric/YouCompleteMe'
 
