@@ -24,7 +24,7 @@ RUN set -x && \
 ENV \
   USER=root \
   GOPATH=$HOME/go \
-  PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+  PATH=$PATH:$HOME/.local/bin:/usr/local/go/bin:$GOPATH/bin
 
 
 VOLUME /mnt/direct

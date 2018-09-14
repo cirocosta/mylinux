@@ -46,3 +46,7 @@
   apt:
     upgrade: 'yes'
 
+- name: 'prepare pip env setting'
+  template:
+    src: 'pip-set-env.sh'
+    dest: '/etc/profile.d'
