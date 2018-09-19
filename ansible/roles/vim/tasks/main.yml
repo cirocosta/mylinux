@@ -44,6 +44,16 @@
     - name: 'YouCompleteMe'
       url: 'https://github.com/Valloric/YouCompleteMe'
 
+- name: 'update ycmd to master'
+  command: 'git checkout master'
+  args:
+    chdir: '{{ user_home }}/.vim/bundle/YouCompleteMe/third_party/ycmd'
+
+- name: 'update ycmd submodules to work with go1.11'
+  command: 'git submodule update --init --recursive'
+  args:
+    chdir: '{{ user_home }}/.vim/bundle/YouCompleteMe/third_party/ycmd'
+
 - name: 'install ycm'
   command: './install.py --go-completer --clang-completer'
   environment: 
