@@ -54,6 +54,13 @@ provision-vostro:
 			--ask-become-pass \
 			./playbooks/provision-vostro.yml
 
+build-gcp-image:
+	cd ./gcp && \
+		packer build \
+			-var ansible_roles_path=$(ANSIBLE_ROLES_PATH) \
+			-var version=$(VERSION) \
+			-var project-id=$(PROJECT_ID) \
+			./image.json
 
 build-aws-ami:
 	cd ./aws && \
