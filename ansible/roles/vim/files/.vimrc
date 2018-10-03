@@ -59,3 +59,6 @@ set ruler
 
 " Set the proper encoding for ycmd to work
 set encoding=utf-8
+
+" Add automatic comment prefix adder
+set formatoptions=tcqr
