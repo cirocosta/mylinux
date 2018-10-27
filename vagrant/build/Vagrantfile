@@ -3,13 +3,13 @@
 
 Vagrant.configure(2) do |config|
   config.vm.box = "ubuntu/bionic64"
-  config.vm.box_check_update = false
+  config.vm.box_check_update = true
 
   config.vm.hostname = "bionic"
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 2048
-    v.cpus = 3
+    v.cpus = 4
   end
 
   config.vm.provision "ansible" do |ansible|
