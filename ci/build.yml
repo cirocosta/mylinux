@@ -1,0 +1,45 @@
+resources:
+- name: repository
+  type: git
+  source:
+    uri: https://github.com/cirocosta/mylinux
+
+- name: builder
+  type: registry-image
+  source:
+    repository: concourse/builder
+
+- name: mylinux-image
+  type: registry-image
+  source:
+    repository: cirocosta/mylinux
+    username: ((docker-user))
+    password: ((docker-password))
+
+
+jobs:
+- name: build
+  plan:
+  - aggregate:
+    - get: builder
+      trigger: true
+    - get: repository
+      trigger: true
+  - task: build
+    privileged: true
+    image: builder
+    config:
+      platform: linux
+      params:
+        REPOSITORY: cirocosta/mylinux
+        TAG: latest
+      inputs:
+      - name: repository
+        path: ./
+      outputs:
+      - name: image
+      run:
+        path: build
+  - put: mylinux-image
+    params:
+      image: image/image.tar

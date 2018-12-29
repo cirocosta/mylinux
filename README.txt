@@ -1,13 +1,13 @@
-mylinux 
+mylinux
 
-        Vagrant box, Docker container, AWS AMI, Terraform configuration 
+        Vagrant box, Docker container, AWS AMI, Terraform configuration
         and ansible scripts that provision my Linux setup.
 
 
 USAGE
 
         - Creating a vagrant box:
-                
+
                 make run-varant-build-machine
                 make build-vagrant-image
 
@@ -48,7 +48,14 @@ USAGE
                 end
 
 
-        - Deploying mylinux container to WeDeploy
+DEPENDENCIES
+        Vagrant:
+                - vagrant
+                - vagrant-disksize
 
-                we deploy -p $project_name
+        Docker:
+                - docker
 
+        AWS:
+                - packer
+                - awscli

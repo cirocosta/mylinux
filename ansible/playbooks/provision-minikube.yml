@@ -1,8 +1,0 @@
----
-- hosts: 'aws'
-  any_errors_fatal: true
-  become: true
-  gather_facts: false
-  roles:
-    - 'kubectl'
-    - 'minikube'

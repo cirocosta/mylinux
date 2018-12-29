@@ -19,6 +19,6 @@
     user_home: '/root'
   roles:
     - 'base'
+    - 'clang'
     - 'go'
-    - 'dep'
     - 'vim'

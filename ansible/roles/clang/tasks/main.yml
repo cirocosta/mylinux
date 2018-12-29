@@ -1,0 +1,37 @@
+---
+- name: 'add llvm apt key'
+  apt_key:
+    url: 'https://apt.llvm.org/llvm-snapshot.gpg.key'
+    state: 'present'
+
+- name: 'add llvm apt repo'
+  apt_repository:
+    repo: 'deb http://apt.llvm.org/bionic/ llvm-toolchain-bionic main'
+    state: 'present'
+    update_cache: 'yes'
+
+- name: 'install dependencies'
+  apt:
+    update_cache: 'yes'
+    cache_valid_time: 3600
+    state: 'present'
+    name:
+    - 'bison'
+    - 'clang-8'
+    - 'clang-8-doc'
+    - 'clang-tools-8'
+    - 'cmake'
+    - 'flex'
+    - 'g++'
+    - 'git'
+    - 'libclang-8-dev'
+    - 'libclang-common-8-dev'
+    - 'libclang1-8'
+    - 'libelf-dev'
+    - 'libfl-dev'
+    - 'libllvm8'
+    - 'llvm-8'
+    - 'llvm-8-dev'
+    - 'llvm-8-runtime'
+    - 'zlib1g-dev'
+
