@@ -1,10 +1,10 @@
 VERSION             = $(shell cat ./VERSION)
 COMMIT_SHA          = $(shell git rev-parse --short HEAD)
 VAGRANT_IMAGE       = mylinux-$(VERSION)
-DOCKER_FINAL_IMAGE  = cirocosta/mylinux
 ANSIBLE_ROLES_PATH  = $(shell realpath ./ansible/roles)
 AWS_IP              = $(shell terraform output -state=./aws/terraform.tfstate public-ip)
 AWS_KEY             = $(shell realpath ./aws/keys/key.rsa)
+
 
 run-aws-instance:
 	cd ./aws && \
@@ -18,36 +18,9 @@ destroy-aws-instance:
 			-var "ami-version=$(VERSION)"
 
 
-run-vagrant-build-machine:
-	cd ./vagrant/build && \
-		vagrant up
-
-
-provision-vagrant-build-machine:
-	cd ./vagrant/build && \
-		vagrant provision
-
-
 ssh-into-aws:
 	ssh -i ./aws/keys/key.rsa ubuntu@$(AWS_IP)
 
-
-provision-minikube-aws:
-	echo "aws ansible_host=$(AWS_IP) ansible_user=ubuntu" \
-		> /tmp/ansible-hosts
-	cd ./ansible && \
-		ansible-playbook \
-			--private-key=$(AWS_KEY) \
-			--inventory /tmp/ansible-hosts \
-			./playbooks/provision-minikube.yml
-
-
-provision-vostro:
-	cd ./ansible && \
-		ansible-playbook \
-			--ask-pass \
-			--ask-become-pass \
-			./playbooks/provision-vostro.yml
 
 build-gcp-image:
 	cd ./gcp && \
@@ -63,6 +36,11 @@ build-aws-ami:
 			-var ansible_roles_path=$(ANSIBLE_ROLES_PATH) \
 			-var version=$(VERSION) \
 			./ami.json
+
+
+run-vagrant-build-machine:
+	cd ./vagrant/build && \
+		vagrant up
 
 
 build-vagrant-image:
@@ -81,11 +59,5 @@ build-kvm-image:
 
 image:
 	docker build \
-		-t $(DOCKER_FINAL_IMAGE):$(VERSION) \
+		-t cirocosta/mylinux \
 		.
-	docker tag \
-		$(DOCKER_FINAL_IMAGE):$(VERSION) \
-		$(DOCKER_FINAL_IMAGE):$(VERSION)-$(COMMIT_SHA)
-	docker tag \
-		$(DOCKER_FINAL_IMAGE):$(VERSION) \
-		$(DOCKER_FINAL_IMAGE):latest
