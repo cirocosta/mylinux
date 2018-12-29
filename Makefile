@@ -1,9 +1,10 @@
 VERSION             = $(shell cat ./VERSION)
-COMMIT_SHA          = $(shell git rev-parse --short HEAD)
-VAGRANT_IMAGE       = mylinux-$(VERSION)
+
 ANSIBLE_ROLES_PATH  = $(shell realpath ./ansible/roles)
 AWS_IP              = $(shell terraform output -state=./aws/terraform.tfstate public-ip)
 AWS_KEY             = $(shell realpath ./aws/keys/key.rsa)
+COMMIT_SHA          = $(shell git rev-parse --short HEAD)
+VAGRANT_IMAGE       = mylinux-$(VERSION)
 
 
 run-aws-instance:
@@ -45,9 +46,12 @@ run-vagrant-build-machine:
 
 build-vagrant-image:
 	cd ./vagrant/build && \
+		test -f $(VAGRANT_IMAGE).box && \
+		rm -f $(VAGRANT_IMAGE).box
+	cd ./vagrant/build && \
 		vagrant package --output $(VAGRANT_IMAGE).box
 	cd ./vagrant/build && \
-		vagrant box add $(VAGRANT_IMAGE) $(VAGRANT_IMAGE).box
+		vagrant box add --force $(VAGRANT_IMAGE) $(VAGRANT_IMAGE).box
 
 
 build-kvm-image:
