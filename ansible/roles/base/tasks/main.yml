@@ -30,6 +30,7 @@
       - 'lsof'
       - 'net-tools'
       - 'nmap'
+      - 'ntp'
       - 'pkg-config'
       - 'python'
       - 'python-pip'
