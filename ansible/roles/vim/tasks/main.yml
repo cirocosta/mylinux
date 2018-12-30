@@ -2,64 +2,18 @@
 - debug:
     msg: 'using user {{ user }} with home directory {{ user_home }}'
 
-- name: 'create .vim contents'
-  file:
-    path: '{{ item }}'
-    group: '{{ user }}'
-    owner: '{{ user }}'
-    recurse: 'yes'
-    state: 'directory'
-  with_items:
-    - '{{ user_home }}/.vim/autoload'
-    - '{{ user_home }}/.vim/bundle'
-    - '{{ user_home }}/.vim_runtime/temp_dirs/undodir'
-
-- name: 'install pathogen'
-  get_url:
-    url: 'https://tpo.pe/pathogen.vim'
-    dest: '{{ user_home }}/.vim/autoload'
-    owner: '{{ user }}'
-    group: '{{ user }}'
-    mode: 0755
-
-- name: 'add vimrc'
-  copy:
-    src: '.vimrc'
-    dest: '{{ user_home }}/.vimrc'
-    owner: '{{ user }}'
-    group: '{{ user }}'
-
-- name: 'clone plugins'
+- name: 'clone configuration'
   git:
-    repo: '{{ item.url }}'
-    dest: '{{ user_home }}/.vim/bundle/{{ item.name }}'
+    repo: 'https://github.com/cirocosta/dot-vim'
+    dest: '{{ user_home }}/.vim'
     force: 'yes'
   register: 'git_result'
   changed_when: "git_result.after|default('after') != git_result.before|default('before')"
-  with_items:
-    - name: 'vim-vinegar'
-      url: 'https://github.com/tpope/vim-vinegar'
-    - name: 'editorconfig-vim'
-      url: 'https://github.com/editorconfig/editorconfig-vim'
-    - name: 'YouCompleteMe'
-      url: 'https://github.com/Valloric/YouCompleteMe'
-
-- name: 'update ycmd to master'
-  command: 'git checkout master'
-  args:
-    chdir: '{{ user_home }}/.vim/bundle/YouCompleteMe/third_party/ycmd'
-
-- name: 'update ycmd submodules to work with go1.11'
-  command: 'git submodule update --init --recursive'
-  args:
-    chdir: '{{ user_home }}/.vim/bundle/YouCompleteMe/third_party/ycmd'
 
 - name: 'install ycm'
-  command: './install.py --go-completer --clang-completer'
-  environment:
-    PATH: "{{ ansible_env.PATH }}:/usr/local/go/bin"
+  command: './install.py --clang-completer'
   args:
-    chdir: '{{ user_home }}/.vim/bundle/YouCompleteMe'
+    chdir: '{{ user_home }}/.vim/pack/cirocosta/start/YouCompleteMe'
 
 - name: 'Set go env vars for all users'
   copy:

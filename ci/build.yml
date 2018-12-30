@@ -4,6 +4,11 @@ resources:
   source:
     uri: https://github.com/cirocosta/mylinux
 
+- name: dot-vim
+  type: git
+  source:
+    uri: https://github.com/cirocosta/dot-vim
+
 - name: builder
   type: registry-image
   source:
@@ -25,6 +30,8 @@ jobs:
       trigger: true
     - get: repository
       trigger: true
+    - get: dot-vim
+      trigger: true
   - task: build
     privileged: true
     image: builder
@@ -33,6 +40,8 @@ jobs:
       params:
         REPOSITORY: cirocosta/mylinux
         TAG: latest
+      caches:
+      - name: cache
       inputs:
       - name: repository
         path: ./
@@ -41,5 +50,6 @@ jobs:
       run:
         path: build
   - put: mylinux-image
+    inputs: [ image ]
     params:
       image: image/image.tar
