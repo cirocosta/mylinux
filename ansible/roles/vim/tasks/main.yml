@@ -10,12 +10,26 @@
   register: 'git_result'
   changed_when: "git_result.after|default('after') != git_result.before|default('before')"
 
+- name: 'create symbolic link for vimrc'
+  file:
+    src: '{{ user_home }}/.vim/.vimrc'
+    dest: '{{ user_home }}/.vimrc'
+    state: 'link'
+
+- name: 'install ncm2 requirement'
+  pip:
+    executable: 'pip3'
+    name: 'pynvim'
+
+- name: 'install vim-go binaries'
+  command: 'vim -E -c GoInstallBinaries -c q'
+
 - name: 'install ycm'
   command: './install.py --clang-completer'
   args:
     chdir: '{{ user_home }}/.vim/pack/cirocosta/start/YouCompleteMe'
 
-- name: 'Set go env vars for all users'
+- name: 'Set vim as default editor'
   copy:
     src: 'vim-set-env.sh'
     dest: '/etc/profile.d'

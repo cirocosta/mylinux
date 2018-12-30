@@ -34,6 +34,7 @@
       - 'pkg-config'
       - 'python'
       - 'python-pip'
+      - 'python3-pip'
       - 'silversearcher-ag'
       - 'socat'
       - 'strace'
