@@ -41,7 +41,7 @@ jobs:
         REPOSITORY: cirocosta/mylinux
         TAG: latest
       caches:
-      - name: cache
+      - path: cache
       inputs:
       - name: repository
         path: ./
