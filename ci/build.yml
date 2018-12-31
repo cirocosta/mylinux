@@ -14,6 +14,12 @@ resources:
   source:
     repository: concourse/builder
 
+- name: bionic
+  type: registry-image
+  source:
+    repository: ubuntu
+    tag: bionic
+
 - name: mylinux-image
   type: registry-image
   source:
@@ -27,6 +33,8 @@ jobs:
   plan:
   - aggregate:
     - get: builder
+      trigger: true
+    - get: bionic
       trigger: true
     - get: repository
       trigger: true
