@@ -23,6 +23,8 @@
 
 - name: 'install vim-go binaries'
   command: 'vim -E -c GoInstallBinaries -c q'
+  environment:
+    HOME: '{{ user_home }}'
 
 - name: 'install ycm'
   command: './install.py --clang-completer'

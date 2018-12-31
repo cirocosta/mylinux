@@ -1,11 +1,11 @@
 FROM ubuntu:bionic
 
-ADD ./ansible /ansible
-
-
 RUN set -x && \
   apt update -y && \
   apt install -y ansible
+
+
+ADD ./ansible /ansible
 
 
 RUN set -x && \
@@ -21,10 +21,4 @@ RUN set -x && \
     --auto-remove ansible -y
 
 
-ENV \
-  USER=root \
-  GOPATH=$HOME/go \
-  PATH=$PATH:$HOME/.local/bin:/usr/local/go/bin:$GOPATH/bin
-
-
-VOLUME /mnt/direct
+ENTRYPOINT [ "bash", "--login" ]

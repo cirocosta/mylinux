@@ -30,7 +30,6 @@
     docker_group_members: [ 'ubuntu', 'vagrant' ]
   roles:
     - 'base'
-    - 'clang'
     - 'go'
     - 'vim'
     - 'docker'
