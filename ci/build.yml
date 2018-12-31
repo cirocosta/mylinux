@@ -1,8 +1,16 @@
+resource_types:
+- name: semver
+  type: registry-image
+  source:
+    repository: concourse/semver-resource
+
+
 resources:
 - name: repository
   type: git
   source:
     uri: https://github.com/cirocosta/mylinux
+    ignore_paths: [ ./VERSION ]
 
 - name: dot-vim
   type: git
@@ -27,9 +35,20 @@ resources:
     username: ((docker-user))
     password: ((docker-password))
 
+- name: version
+  type: semver
+  source:
+    driver: git
+    uri: https://((github-token))@github.com/cirocosta/mylinux
+    branch: master
+    file: ./VERSION
+    git_user: Ciro S. Costa <cscosta@pivotal.io>
+
 
 jobs:
 - name: build
+  serial: true
+  public: true
   plan:
   - aggregate:
     - get: builder
@@ -40,6 +59,7 @@ jobs:
       trigger: true
     - get: dot-vim
       trigger: true
+    - get: version
   - task: build
     privileged: true
     image: builder
@@ -47,15 +67,19 @@ jobs:
       platform: linux
       params:
         REPOSITORY: cirocosta/mylinux
-        TAG: latest
       inputs:
       - name: repository
         path: ./
       outputs:
       - name: image
       run:
-        path: build
-  - put: mylinux-image
-    inputs: [ image ]
-    params:
-      image: image/image.tar
+        path: /bin/bash
+        args: [ '-ce', 'TAG=$(cat ./version/version) build' ]
+  - aggregate:
+    - put: mylinux-image
+      inputs: [ image ]
+      params:
+        image: image/image.tar
+    - put: version
+      params:
+        bump: minor
