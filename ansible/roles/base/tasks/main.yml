@@ -6,6 +6,7 @@
     state: 'present'
     name:
       - 'autoconf'
+      - 'bash-completion'
       - 'bc'
       - 'bison'
       - 'build-essential'
@@ -27,6 +28,7 @@
       - 'libtool'
       - 'linux-headers-generic'
       - 'linux-tools-common'
+      - 'locales'
       - 'lsof'
       - 'net-tools'
       - 'nmap'
@@ -48,7 +50,12 @@
   apt:
     upgrade: 'yes'
 
-- name: 'prepare base environment variables'
+- name: 'set locales'
+  locale_gen:
+    name: 'en_US.UTF-8'
+    state: 'present'
+
+- name: 'set bashrc'
   template:
-    src: 'set-base-env.sh'
-    dest: '/etc/profile.d'
+    src: '.bashrc'
+    dest: '{{ user_home }}/.bashrc'
