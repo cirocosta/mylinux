@@ -25,6 +25,7 @@
   command: 'vim -E -c GoInstallBinaries -c q'
   environment:
     HOME: '{{ user_home }}'
+    PATH: '/usr/local/go/bin:{{ ansible_env.PATH }}'
 
 - name: 'install ycm'
   command: './install.py --clang-completer'

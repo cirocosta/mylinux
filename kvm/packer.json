@@ -1,51 +1,51 @@
 {
-    "builders": [
-        {
-            "accelerator": "none",
-            "disk_compression": true,
-            "disk_image": true,
-            "disk_size": 5000,
-            "format": "qcow2",
-            "headless": true,
-            "iso_checksum": "44403e2268d7326db5a5b7d19338b6bc08ae2ba35662ed8e8a0fda3aee70f6e2",
-            "iso_checksum_type": "sha256",
-            "iso_url": "https://cloud-images.ubuntu.com/bionic/20180529/bionic-server-cloudimg-amd64.img",
-            "output_directory": "image",
-            "qemuargs": [
-                [
-                    "-m",
-                    "512M"
-                ],
-                [
-                    "-smp",
-                    "2"
-                ],
-                [
-                    "-fda",
-                    "disk-image.img"
-                ],
-                [
-                    "-serial",
-                    "mon:stdio"
-                ]
-            ],
-            "ssh_password": "ubuntu",
-            "ssh_port": 22,
-            "ssh_username": "ubuntu",
-            "ssh_wait_timeout": "300s",
-            "type": "qemu",
-            "use_default_display": true,
-            "vm_name": "ubuntu"
-        }
-    ],
-    "provisioners": [
-        {
-            "ansible_env_vars": [
-                "ANSIBLE_ROLES_PATH={{ user `ansible_roles_path` }}"
-            ],
-            "host_alias": "kvm",
-            "playbook_file": "../ansible/playbooks/provision-kvm.yml",
-            "type": "ansible"
-        }
-    ]
+  "builders": [
+    {
+      "accelerator": "none",
+      "disk_compression": true,
+      "disk_image": true,
+      "disk_size": 5000,
+      "format": "qcow2",
+      "headless": true,
+      "iso_checksum": "44403e2268d7326db5a5b7d19338b6bc08ae2ba35662ed8e8a0fda3aee70f6e2",
+      "iso_checksum_type": "sha256",
+      "iso_url": "https://cloud-images.ubuntu.com/bionic/20180529/bionic-server-cloudimg-amd64.img",
+      "output_directory": "image",
+      "qemuargs": [
+        [
+          "-m",
+          "512M"
+        ],
+        [
+          "-smp",
+          "2"
+        ],
+        [
+          "-fda",
+          "disk-image.img"
+        ],
+        [
+          "-serial",
+          "mon:stdio"
+        ]
+      ],
+      "ssh_password": "ubuntu",
+      "ssh_port": 22,
+      "ssh_username": "ubuntu",
+      "ssh_wait_timeout": "300s",
+      "type": "qemu",
+      "use_default_display": true,
+      "vm_name": "ubuntu"
+    }
+  ],
+  "provisioners": [
+    {
+      "ansible_env_vars": [
+        "ANSIBLE_ROLES_PATH={{ user `ansible_roles_path` }}"
+      ],
+      "host_alias": "kvm",
+      "playbook_file": "../ansible/playbooks/provision-kvm.yml",
+      "type": "ansible"
+    }
+  ]
 }
