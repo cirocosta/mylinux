@@ -8,7 +8,6 @@ USAGE
 
         - Creating a vagrant box:
 
-                make run-varant-build-machine
                 make build-vagrant-image
 
 
@@ -35,20 +34,31 @@ USAGE
 
         - Running the Vagrant box:
 
-                Vagrant.configure(2) do |config|
-                  config.ssh.username = "ubuntu"
+                1. Create a Vagrantfile
 
-                  config.vm.box = "mylinux-v0.0.5"
-                  config.vm.box_check_update = false
+                        Vagrant.configure(2) do |config|
+                          config.vm.hostname = 'bionic'
 
-                  config.vm.provider "virtualbox" do |v|
-                    v.memory = 2048
-                    v.cpus = 3
-                  end
-                end
+                          config.vm.box = "mylinux-0.2.2"
+                          config.vm.box_check_update = false
+
+                          config.vm.provider "virtualbox" do |v|
+                            v.memory = 2048
+                            v.cpus = 3
+                          end
+                        end
+
+                2. Get it up and SSH into it
+
+                        vagrant up
+                        vagrant ssh
+                        sudo su - ubuntu
 
 
 DEPENDENCIES
+        Make:
+                - make >=3.8.2
+
         Vagrant:
                 - vagrant
                 - vagrant-disksize
