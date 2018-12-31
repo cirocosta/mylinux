@@ -68,6 +68,7 @@ jobs:
       params:
         REPOSITORY: cirocosta/mylinux
       inputs:
+      - name: version
       - name: repository
         path: ./
       outputs:
