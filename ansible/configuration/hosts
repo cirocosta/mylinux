@@ -1,9 +1,4 @@
 docker_container ansible_host=ansible_container
-vostro ansible_ssh_user=cirocosta ansible_host=vostro.home
 
 [docker]
 docker_container
-
-[vostro]
-vostro
-
