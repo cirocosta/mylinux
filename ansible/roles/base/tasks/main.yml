@@ -50,6 +50,10 @@
   apt:
     upgrade: 'yes'
 
+- name: 'install autojump'
+  apt:
+    deb: 'https://github.com/gsamokovarov/jump/releases/download/v0.22.0/jump_0.22.0_amd64.deb'
+
 - name: 'set locales'
   locale_gen:
     name: 'en_US.UTF-8'

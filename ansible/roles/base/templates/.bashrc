@@ -23,6 +23,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+
 # Aliases
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
@@ -30,3 +31,7 @@ alias grep='grep --color=auto'
 
 # Environment
 PATH={{ user_home }}/.local/bin:$PATH
+
+
+# Autojump (that `j` thing)
+eval "$(jump shell)"

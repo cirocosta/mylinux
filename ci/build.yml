@@ -79,8 +79,11 @@ jobs:
   - aggregate:
     - put: mylinux-image
       inputs: [ image ]
+      get_params:
+        format: oci
       params:
         image: image/image.tar
     - put: version
+      inputs: []
       params:
-        bump: minor
+        bump: patch
