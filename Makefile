@@ -3,7 +3,7 @@ AWS_IP              = $(shell terraform output -state=./aws/terraform.tfstate pu
 AWS_KEY             = $(shell realpath ./aws/keys/key.rsa)
 COMMIT_SHA          = $(shell git rev-parse --short HEAD)
 VAGRANT_BOX         = mylinux.box
-VAGRANT_IMAGE       = mylinux-$(shell cat ./VERSION)
+VAGRANT_IMAGE       = mylinux
 VERSION             = $(shell cat ./VERSION)
 
 
