@@ -56,8 +56,6 @@ USAGE
 
 
 DEPENDENCIES
-        Make:
-                - make >=3.8.2
 
         Vagrant:
                 - vagrant

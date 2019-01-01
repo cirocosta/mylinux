@@ -39,17 +39,15 @@ build-aws-ami:
 			./ami.json
 
 
-.ONESHELL:
 build-vagrant-image:
-	cd ./vagrant/build
-	find . -name "*.box" -delete
-	vagrant up
-	vagrant package --output $(VAGRANT_BOX)
-	vagrant box add --force \
-		$(VAGRANT_IMAGE) \
-		$(VAGRANT_BOX)
-	vagrant destroy -f
-
+	cd ./vagrant/build && \
+		find . -name "*.box" -delete && \
+		vagrant up && \
+		vagrant package --output $(VAGRANT_BOX) && \
+		vagrant box add --force \
+			$(VAGRANT_IMAGE) \
+			$(VAGRANT_BOX) && \
+		vagrant destroy -f
 
 
 build-kvm-image:

@@ -54,15 +54,11 @@
   apt:
     deb: 'https://github.com/gsamokovarov/jump/releases/download/v0.22.0/jump_0.22.0_amd64.deb'
 
-- name: 'fetch duet'
-  get_url:
-    url: 'https://github.com/git-duet/git-duet/releases/download/0.6.0/linux_amd64.tar.gz'
-    dest: '/tmp/git-duet.tgz'
-
 - name: 'install duet'
   unarchive:
-    src: '/tmp/git-duet.tgz'
+    src: 'https://github.com/git-duet/git-duet/releases/download/0.6.0/linux_amd64.tar.gz'
     dest: '/usr/local/bin'
+    remote_src: 'yes'
 
 - name: 'set global git config'
   template:
