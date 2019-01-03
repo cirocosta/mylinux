@@ -15,7 +15,7 @@ HISTFILESIZE=200000
 
 
 # Set the prompt
-PS1="\[\e[1m\] \w $ \[\e[0m\]"
+PS1='\[\e[1m\] \w \$ \[\e[0m\]'
 
 
 # Activate bash completion
