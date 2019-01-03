@@ -40,6 +40,7 @@
       - 'silversearcher-ag'
       - 'socat'
       - 'strace'
+      - 'sudo'
       - 'sysstat'
       - 'tree'
       - 'unzip'
@@ -62,11 +63,15 @@
 
 - name: 'set global git config'
   template:
+    owner: '{{ user }}'
+    group: '{{ user }}'
     src: '.gitconfig'
     dest: '{{ user_home }}/.gitconfig'
 
 - name: 'set global git authors'
   template:
+    owner: '{{ user }}'
+    group: '{{ user }}'
     src: '.git-authors'
     dest: '{{ user_home }}/.git-authors'
 
@@ -77,5 +82,7 @@
 
 - name: 'set bashrc'
   template:
+    owner: '{{ user }}'
+    group: '{{ user }}'
     src: '.bashrc'
     dest: '{{ user_home }}/.bashrc'
