@@ -5,6 +5,16 @@ mylinux
 
 
 USAGE
+        - Provisioning a local Linux machine
+
+                apt update && apt install -y ansible
+                cd ansible && \
+                        ansible-playbook \
+                                --extra-vars=user=myuser \
+                                --extra-vars=user_home=/home/myuser \
+                                --connection=local \
+                                playbooks/provision-container.yml
+
 
         - Creating a vagrant box:
 
