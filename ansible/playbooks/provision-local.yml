@@ -1,14 +1,16 @@
 ---
 # Provisions local bare-metal linux machine.
-# It assumes that `ansible` is already installed,
-# thus `python` is as well.
+# It assumes that:
+# - `ansible` is already installed, thus `python` is as well; and
+# - the configured user is not `root`
 
 - hosts: 'local'
   any_errors_fatal: true
   vars:
     user: 'ubuntu'
+    user_home: '/home/{{ user }}'
     docker_enable_service: 'no'
-    docker_group_members: [ 'ubuntu' ]
+    docker_group_members: [ '{{ user }}' ]
   roles:
     - 'base'
     - 'go'
