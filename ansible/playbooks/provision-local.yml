@@ -7,7 +7,6 @@
   any_errors_fatal: true
   vars:
     user: 'ubuntu'
-    user_home: '/home/ubuntu'
     docker_enable_service: 'no'
     docker_group_members: [ 'ubuntu' ]
   roles:
