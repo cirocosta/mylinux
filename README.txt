@@ -12,7 +12,6 @@ USAGE
                         ansible-playbook \
                                 --extra-vars=user=myuser \
                                 --extra-vars=user_home=/home/myuser \
-                                --connection=local \
                                 playbooks/provision-local.yml
 
 

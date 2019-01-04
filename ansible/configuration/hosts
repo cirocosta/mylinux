@@ -1,4 +1,1 @@
-docker_container ansible_host=ansible_container
-
-[docker]
-docker_container
+local ansible_connection=local

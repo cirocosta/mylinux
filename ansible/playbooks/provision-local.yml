@@ -3,8 +3,7 @@
 # It assumes that `ansible` is already installed,
 # thus `python` is as well.
 
-- hosts: 'default'
-  connection: 'local'
+- hosts: 'local'
   any_errors_fatal: true
   vars:
     user: 'ubuntu'
