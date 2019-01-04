@@ -1,0 +1,19 @@
+---
+# Provisions local bare-metal linux machine.
+# It assumes that `ansible` is already installed,
+# thus `python` is as well.
+
+- hosts: 'default'
+  connection: 'local'
+  any_errors_fatal: true
+  vars:
+    user: 'ubuntu'
+    user_home: '/home/ubuntu'
+    docker_enable_service: 'no'
+    docker_group_members: [ 'ubuntu' ]
+  roles:
+    - 'base'
+    - 'go'
+    - 'vim'
+    - 'docker'
+    - 'bcc'
