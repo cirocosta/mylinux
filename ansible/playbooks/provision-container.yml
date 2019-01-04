@@ -4,15 +4,13 @@
 # then running the commands as described by the
 # roles locally.
 
-- hosts: 'docker'
+- hosts: 'local'
   any_errors_fatal: true
   gather_facts: false
-  connection: 'local'
   roles:
     - 'bootstrap'
 
-- hosts: 'docker'
-  connection: 'local'
+- hosts: 'local'
   any_errors_fatal: true
   vars:
     user: 'root'
