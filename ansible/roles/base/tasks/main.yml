@@ -10,6 +10,7 @@
       - 'bc'
       - 'bison'
       - 'build-essential'
+      - 'bzr'
       - 'clang-format'
       - 'cmake'
       - 'curl'
