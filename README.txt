@@ -13,7 +13,7 @@ USAGE
                                 --extra-vars=user=myuser \
                                 --extra-vars=user_home=/home/myuser \
                                 --connection=local \
-                                playbooks/provision-container.yml
+                                playbooks/provision-local.yml
 
 
         - Creating a vagrant box:
