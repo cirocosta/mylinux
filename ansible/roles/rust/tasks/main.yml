@@ -1,0 +1,19 @@
+---
+- name: 'install using rustup'
+  become: yes
+  become_user: '{{ user }}'
+  shell: |-
+    curl https://sh.rustup.rs -sSf | sh -s -- -y
+
+- name: 'install crates'
+  become: yes
+  become_user: '{{ user }}'
+  shell: |-
+    ~/.cargo/bin/rustup run stable cargo install --force {{ item }}
+  with_items: "{{ rust_crates }}"
+
+- name: 'install rust src'
+  become: yes
+  become_user: '{{ user }}'
+  shell: |-
+    ~/.cargo/bin/rustup component add rust-src

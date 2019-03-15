@@ -17,5 +17,6 @@
     user_home: '/root'
   roles:
     - 'base'
+    - 'rust'
     - 'go'
     - 'vim'

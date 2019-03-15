@@ -29,6 +29,7 @@
   roles:
     - 'base'
     - 'go'
+    - 'rust'
     - 'vim'
     - 'docker'
     - 'bcc'

@@ -36,7 +36,7 @@
 - name: 'install ycm'
   become: 'yes'
   become_user: '{{ user }}'
-  command: './install.py --clang-completer'
+  command: './install.py --clang-completer --rust-completer'
   args:
     chdir: '{{ user_home }}/.vim/pack/cirocosta/start/YouCompleteMe'
 

@@ -1,0 +1,6 @@
+---
+user: 'ubuntu'
+user_home: '/home/{{ user }}'
+rust_crates:
+  - rustfmt
+
