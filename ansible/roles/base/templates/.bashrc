@@ -13,6 +13,9 @@ HISTCONTROL=ignoredups:ignorespace
 HISTSIZE=100000
 HISTFILESIZE=200000
 
+# Git duet
+export GIT_DUET_SET_GIT_USER_CONFIG=1
+
 
 # Set the prompt
 PS1='\[\e[1m\] \w \$ \[\e[0m\]'
