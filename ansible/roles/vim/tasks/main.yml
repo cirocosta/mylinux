@@ -39,6 +39,9 @@
   command: './install.py --clang-completer --rust-completer'
   args:
     chdir: '{{ user_home }}/.vim/pack/cirocosta/start/YouCompleteMe'
+  environment:
+    HOME: '{{ user_home }}'
+    PATH: '/home/ubuntu/.cargo/bin:/usr/local/go/bin:{{ ansible_env.PATH }}'
 
 - name: 'Set vim as default editor'
   copy:
