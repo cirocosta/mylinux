@@ -13,6 +13,7 @@
     docker_group_members: [ '{{ user }}' ]
   roles:
     - 'base'
+    - 'rust'
     - 'go'
     - 'vim'
     - 'docker'
