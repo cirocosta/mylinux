@@ -34,3 +34,4 @@
     - 'docker'
     - 'bcc'
     - 'flamegraph'
+    - 'bpftrace'
