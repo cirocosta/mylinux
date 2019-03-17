@@ -1,0 +1,14 @@
+- name: 'clone source code'
+  become: 'yes'
+  become_user: '{{ user }}'
+  git:
+    repo: 'https://github.com/brendangregg/FlameGraph'
+    dest: '/usr/share/flamegraph'
+    force: 'yes'
+  register: 'git_result'
+  changed_when: "git_result.after|default('after') != git_result.before|default('before')"
+
+- name: 'set env vars for all users'
+  copy:
+    src: 'flamegraph-set-env.sh'
+    dest: '/etc/profile.d'

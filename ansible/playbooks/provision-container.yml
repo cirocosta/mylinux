@@ -20,3 +20,4 @@
     - 'rust'
     - 'go'
     - 'vim'
+    - 'flamegraph'

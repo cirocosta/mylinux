@@ -34,6 +34,7 @@
       - 'net-tools'
       - 'nmap'
       - 'ntp'
+      - 'perl'
       - 'pkg-config'
       - 'python'
       - 'python-pip'

@@ -33,3 +33,4 @@
     - 'vim'
     - 'docker'
     - 'bcc'
+    - 'flamegraph'
