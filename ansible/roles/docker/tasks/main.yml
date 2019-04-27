@@ -32,6 +32,11 @@
     state: 'started'
     enabled: '{{ docker_enable_service }}'
 
+- name: 'create daemon config directory'
+  file:
+    path: '/etc/docker'
+    state: 'directory'
+
 - name: 'prepare default daemon configuration'
   template:
     src: 'daemon.json'

@@ -1,12 +1,16 @@
 - name: 'clone source code'
-  become: 'yes'
-  become_user: '{{ user }}'
   git:
     repo: 'https://github.com/brendangregg/FlameGraph'
     dest: '/usr/share/flamegraph'
     force: 'yes'
   register: 'git_result'
   changed_when: "git_result.after|default('after') != git_result.before|default('before')"
+
+- name: 'allow anyone to use it'
+  file:
+    recurse: true
+    path: '/usr/share/flamegraph'
+    mode: 0755
 
 - name: 'set env vars for all users'
   copy:

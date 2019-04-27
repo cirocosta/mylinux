@@ -25,7 +25,9 @@
   any_errors_fatal: true
   vars:
     docker_enable_service: 'no'
+    docker_apt_repository_release_channel: 'test'
     docker_group_members: [ 'ubuntu', 'vagrant' ]
+    bcc_apt_repository_distribution_release: 'bionic'
   roles:
     - 'base'
     - 'go'

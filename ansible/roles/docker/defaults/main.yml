@@ -5,5 +5,5 @@ docker_apt_repository_distribution: '{{ ansible_distribution|lower }}'
 docker_apt_repository_distribution_release: '{{ ansible_distribution_release }}'
 docker_apt_repository_release_channel: 'stable'
 docker_apt_repository: 'deb https://download.docker.com/linux/{{ docker_apt_repository_distribution }} {{ docker_apt_repository_distribution_release }} {{ docker_apt_repository_release_channel }}'
-docker_group_members: 
+docker_group_members:
   - 'ubuntu'
