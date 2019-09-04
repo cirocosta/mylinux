@@ -1,25 +1,7 @@
 FROM ubuntu:bionic
 
-RUN set -x && \
-  apt update -y && \
-  apt install -y ansible
+        ADD ./install.sh /install.sh
 
+        RUN /install.sh
 
-ADD ./ansible /ansible
-
-
-RUN set -x && \
-  cd /ansible && \
-  ansible-playbook \
-    --inventory-file=./configuration/hosts \
-    --connection=local \
-    playbooks/provision-container.yml
-
-
-RUN set -x && \
-  rm -rf /ansible && \
-  apt-get purge \
-    --auto-remove ansible -y
-
-
-ENTRYPOINT [ "bash", "--login" ]
+        ENTRYPOINT [ "bash", "--login" ]
