@@ -2,20 +2,15 @@
 # vi: set ft=ruby :
 
 Vagrant.configure(2) do |config|
-  config.vm.box = "ubuntu/bionic64"
+  config.vm.boot_timeout = 600
+  config.vm.box = "ubuntu/disco64"
   config.vm.box_check_update = true
-
-  config.vm.hostname = "bionic"
+  config.vm.hostname = "disco"
+  config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.provider "virtualbox" do |v|
     v.memory = 4096
     v.cpus = 6
   end
 
-  config.vm.provision "ansible" do |ansible|
-    ansible.playbook = "../../ansible/playbooks/provision-vagrant.yml"
-    ansible.config_file = "../../ansible/ansible.cfg"
-  end
-
-  config.vm.synced_folder ".", "/vagrant", disabled: true
 end
