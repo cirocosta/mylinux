@@ -9,6 +9,8 @@
 
 set -o errexit
 set -o nounset
+set -o pipefail
+
 
 main () {
         setup_bashrc
@@ -55,6 +57,7 @@ export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
         " >> ~/.bashrc
 }
 
+
 setup_vim () {
         git clone https://github.com/cirocosta/dot-vim ~/.vim --recurse-submodules -j4
         ln -s $(realpath ~/.vim/.vimrc) $(realpath ~/.vimrc)
@@ -65,6 +68,7 @@ export EDITOR=vim
         " >> ~/.bashrc
 }
 
+
 install_autojump () {
         local deb_file=/tmp/jump.deb
 
@@ -72,6 +76,7 @@ install_autojump () {
         sudo dpkg -i $deb_file
         rm $deb_file
 }
+
 
 setup_gitconfig () {
         cat << 'EOF' > ~/.gitconfig
