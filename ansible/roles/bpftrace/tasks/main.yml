@@ -1,6 +1,0 @@
----
-- name: 'install'
-  command: 'snap install bpftrace'
-
-- name: 'connect'
-  command: 'snap connect bpftrace:system-trace'
