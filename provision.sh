@@ -19,6 +19,7 @@ main () {
         install_go
         install_autojump
         setup_vim
+        setup_tmux
 }
 
 install_apt_deps () {
@@ -43,6 +44,7 @@ install_apt_deps () {
                 silversearcher-ag \
                 strace \
                 tree \
+                tmux \
                 unzip \
                 vim
 }
@@ -90,6 +92,15 @@ setup_gitconfig () {
 [user]
         name = Ciro S. Costa
         email = cscosta@pivotal.io
+EOF
+}
+
+
+setup_tmux () {
+        cat << 'EOF' > ~/.tmux.conf
+set-window-option -g mode-keys vi
+set -g prefix C-a
+set -g history-limit 10000
 EOF
 }
 
