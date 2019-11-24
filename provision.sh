@@ -62,7 +62,7 @@ install_bpftrace () {
 
 install_go () {
         sudo chown -R $(whoami) /usr/local
-        curl -SL https://dl.google.com/go/go1.13.linux-amd64.tar.gz | tar xvzf - -C /usr/local
+        curl -SL https://dl.google.com/go/go1.13.4linux-amd64.tar.gz | tar xvzf - -C /usr/local
 
         echo "
 export GOPATH=$HOME/go
@@ -133,7 +133,7 @@ shopt -s checkwinsize
 #
 shopt -s histappend
 HISTCONTROL=ignoredups:ignorespace
-HISTSIZE=100000
+HISTSIZE=500000
 HISTFILESIZE=200000
 
 
