@@ -16,6 +16,7 @@ main () {
         setup_bashrc
         setup_gitconfig
         install_apt_deps
+        install_bpftrace
         install_go
         install_autojump
         setup_vim
@@ -23,18 +24,22 @@ main () {
 }
 
 install_apt_deps () {
-        sudo apt update
+        echo "deb [trusted=yes] https://repo.iovisor.org/apt/bionic bionic-nightly main" \
+                | sudo tee /etc/apt/sources.list.d/iovisor.list
+        sudoa apt update
+
         sudo apt install -y \
                 bash-completion \
-                bpfcc-tools \
-                bpftrace \
+                bcc-tools \
                 build-essential \
                 clang \
                 curl \
                 git \
                 htop \
                 jq \
+                libbcc-examples
                 libelf-dev \
+                libtinfo5 \
                 linux-headers-$(uname -r) \
                 linux-tools-$(uname -r) \
                 llvm \
@@ -43,10 +48,15 @@ install_apt_deps () {
                 pkg-config \
                 silversearcher-ag \
                 strace \
-                tree \
                 tmux \
+                tree \
                 unzip \
                 vim
+}
+
+install_bpftrace () {
+        sudo snap install --devmode bpftrace
+        sudo snap connect bpftrace:system-trace
 }
 
 install_go () {

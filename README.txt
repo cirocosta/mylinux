@@ -2,6 +2,7 @@ mylinux
 
         configuration intended to bootstrap an Ubuntu Disco anywhere
 
+        curl -SL https://raw.githubusercontent.com/cirocosta/mylinux/master/provision.sh | bash
 
 
 steps
