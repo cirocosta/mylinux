@@ -38,7 +38,7 @@ install_apt_deps () {
                 git \
                 htop \
                 jq \
-                libbcc-examples
+                libbcc-examples \
                 libelf-dev \
                 libtinfo5 \
                 linux-headers-$(uname -r) \
