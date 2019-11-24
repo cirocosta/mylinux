@@ -26,7 +26,8 @@ main () {
 install_apt_deps () {
         echo "deb [trusted=yes] https://repo.iovisor.org/apt/bionic bionic-nightly main" \
                 | sudo tee /etc/apt/sources.list.d/iovisor.list
-        sudoa apt update
+
+        sudo apt update
 
         sudo apt install -y \
                 bash-completion \
