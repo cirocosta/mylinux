@@ -47,6 +47,7 @@ install_apt_deps () {
                 lsb-release \
                 ltrace \
                 pkg-config \
+                python3-pip \
                 silversearcher-ag \
                 strace \
                 tmux \
