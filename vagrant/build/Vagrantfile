@@ -3,9 +3,9 @@
 
 Vagrant.configure(2) do |config|
   config.vm.boot_timeout = 600
-  config.vm.box = "ubuntu/disco64"
+  config.vm.box = "ubuntu/eoan64"
   config.vm.box_check_update = true
-  config.vm.hostname = "disco"
+  config.vm.hostname = "eoan"
   config.vm.synced_folder ".", "/vagrant", disabled: true
 
   config.vm.provider "virtualbox" do |v|
