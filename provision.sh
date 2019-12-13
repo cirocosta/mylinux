@@ -51,6 +51,7 @@ install_apt_deps () {
                 silversearcher-ag \
                 strace \
                 tmux \
+                trace-cmd \
                 tree \
                 unzip \
                 vim
