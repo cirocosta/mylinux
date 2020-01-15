@@ -114,6 +114,7 @@ setup_tmux () {
 set-window-option -g mode-keys vi
 set -g prefix C-a
 set -g history-limit 10000
+bind-key -T copy-mode-vi 'v' send -X begin-selection
 EOF
 }
 
