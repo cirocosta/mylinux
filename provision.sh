@@ -64,7 +64,7 @@ install_bpftrace () {
 
 install_go () {
         sudo chown -R $(whoami) /usr/local
-        curl -SL https://dl.google.com/go/go1.13.6.linux-amd64.tar.gz | tar xvzf - -C /usr/local
+        curl -SL https://golang.org/dl/go1.15.3.linux-amd64.tar.gz | tar xvzf - -C /usr/local
 
         echo "
 export GOPATH=$HOME/go
@@ -96,15 +96,16 @@ install_autojump () {
 setup_gitconfig () {
         cat << 'EOF' > ~/.gitconfig
 [alias]
-	ci = commit -s
-	co = checkout
+        ci = commit -s
+        co = checkout
+        st = status
 [push]
 	default = simple
 [trailer]
 	ifexists = addIfDifferent
 [user]
         name = Ciro S. Costa
-        email = cscosta@pivotal.io
+        email = ciroscosta@vmware.com
 EOF
 }
 
@@ -136,8 +137,8 @@ shopt -s checkwinsize
 #
 shopt -s histappend
 HISTCONTROL=ignoredups:ignorespace
-HISTSIZE=500000
-HISTFILESIZE=200000
+HISTSIZE=5000000
+HISTFILESIZE=2000000
 
 
 # set the prompt layout
