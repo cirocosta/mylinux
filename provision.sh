@@ -13,58 +13,41 @@ set -o pipefail
 
 
 main () {
-        setup_bashrc
-        setup_gitconfig
-        install_apt_deps
-        install_bpftrace
-        install_go
-        install_autojump
+	setup_bashrc
+	setup_gitconfig
+	install_apt_deps
+	install_go
+	install_autojump
         setup_vim
         setup_tmux
 }
 
 install_apt_deps () {
-        echo "deb [trusted=yes] https://repo.iovisor.org/apt/bionic bionic-nightly main" \
-                | sudo tee /etc/apt/sources.list.d/iovisor.list
-
         sudo apt update
-
         sudo apt install -y \
+		bzip2 \
                 bash-completion \
-                bcc-tools \
                 build-essential \
-                clang \
                 curl \
                 git \
                 htop \
                 jq \
-                libbcc-examples \
-                libelf-dev \
-                libtinfo5 \
                 linux-headers-$(uname -r) \
                 linux-tools-$(uname -r) \
-                llvm \
                 lsb-release \
-                ltrace \
                 pkg-config \
                 python3-pip \
                 silversearcher-ag \
                 strace \
                 tmux \
-                trace-cmd \
                 tree \
                 unzip \
                 vim
 }
 
-install_bpftrace () {
-        sudo snap install --devmode bpftrace
-        sudo snap connect bpftrace:system-trace
-}
-
 install_go () {
         sudo chown -R $(whoami) /usr/local
-        curl -SL https://golang.org/dl/go1.15.3.linux-amd64.tar.gz | tar xvzf - -C /usr/local
+        curl -SL https://golang.org/dl/go1.17.linux-amd64.tar.gz | tar xvzf - -C /usr/local
 
         echo "
 export GOPATH=$HOME/go
@@ -74,7 +57,7 @@ export PATH=$PATH:/usr/local/go/bin:$HOME/go/bin
 
 
 setup_vim () {
-        git clone https://github.com/cirocosta/dot-vim ~/.vim --recurse-submodules -j4
+        git clone --recursive https://github.com/cirocosta/dot-vim ~/.vim
         ln -s $(realpath ~/.vim/.vimrc) $(realpath ~/.vimrc)
 
         echo "
@@ -87,7 +70,7 @@ export EDITOR=vim
 install_autojump () {
         local deb_file=/tmp/jump.deb
 
-        curl -o $deb_file -SL https://github.com/gsamokovarov/jump/releases/download/v0.23.0/jump_0.23.0_amd64.deb
+        curl -o $deb_file -SL https://github.com/gsamokovarov/jump/releases/download/v0.40.0/jump_0.40.0_amd64.deb
         sudo dpkg -i $deb_file
         rm $deb_file
 }
@@ -97,15 +80,10 @@ setup_gitconfig () {
         cat << 'EOF' > ~/.gitconfig
 [alias]
         ci = commit -s
-        co = checkout
-        st = status
 [push]
 	default = simple
 [trailer]
 	ifexists = addIfDifferent
-[user]
-        name = Ciro S. Costa
-        email = ciroscosta@vmware.com
 EOF
 }
 
@@ -116,6 +94,9 @@ set-window-option -g mode-keys vi
 set -g prefix C-a
 set -g history-limit 10000
 bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
+set -g status-style 'bg=colour75,fg=black'
+set -g status-right ''
 EOF
 }
 
@@ -143,7 +124,8 @@ HISTFILESIZE=2000000
 
 # set the prompt layout
 #
-PS1='\[\e[1m\] \w \$ \[\e[0m\]'
+PS1='\[\e[1m\] \W \$ \[\e[0m\]'
+
 
 
 # activate bash completion
