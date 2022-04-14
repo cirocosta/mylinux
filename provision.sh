@@ -44,7 +44,8 @@ install_apt_deps() {
 
 install_go() {
         sudo chown -R $(whoami) /usr/local
-        curl -SL https://golang.org/dl/go1.17.linux-amd64.tar.gz | tar xvzf - -C /usr/local
+
+        curl -SL https://go.dev/dl/go1.18.1.linux-amd64.tar.gz | tar xvzf - -C /usr/local
 
         echo "
 export GOPATH=$HOME/go
@@ -132,6 +133,7 @@ fi
 alias ls='ls --color=auto'
 alias grep='grep --color=auto'
 alias k='kubectl'
+# complete -F __start_kubectl k
 
 
 # autojump (that `j` thing)
