@@ -35,7 +35,6 @@ install_apt_deps() {
                 pkg-config \
                 python3-pip \
                 silversearcher-ag \
-                strace \
                 tmux \
                 tree \
                 unzip \
@@ -45,7 +44,7 @@ install_apt_deps() {
 install_go() {
         sudo chown -R $(whoami) /usr/local
 
-        curl -SL https://go.dev/dl/go1.18.1.linux-amd64.tar.gz | tar xvzf - -C /usr/local
+        curl -SL https://go.dev/dl/go1.20.1.linux-amd64.tar.gz | tar xvzf - -C /usr/local
 
         echo "
 export GOPATH=$HOME/go
