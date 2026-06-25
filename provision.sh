@@ -8,12 +8,26 @@ readonly GO_VERSION="1.26.4"
 readonly GO_SHA256_AMD64="1153d3d50e0ac764b447adfe05c2bcf08e889d42a02e0fe0259bd47f6733ad7f"
 readonly GO_SHA256_ARM64="ef758ae7c6cf9267c9c0ef080b8965f453d89ab2d25d9eb22de4405925238768"
 
+readonly NODE_VERSION="24.18.0"
+readonly NODE_SHA256_X64="783130984963db7ba9cbd01089eaf2c2efb055c7c1693c943174b967b3050cb8"
+readonly NODE_SHA256_ARM64="6b4484c2190274175df9aa8f28e2d758a819cb1c1fe6ab481e2f95b463ab8508"
+
+readonly SHFMT_VERSION="3.13.1"
+readonly SHFMT_SHA256_AMD64="fb096c5d1ac6beabbdbaa2874d025badb03ee07929f0c9ff67563ce8c75398b1"
+readonly SHFMT_SHA256_ARM64="32d92acaa5cd8abb29fc49dac123dc412442d5713967819d8af2c29f1b3857c7"
+
+readonly GOLANGCI_LINT_VERSION="2.12.2"
+readonly GOLANGCI_LINT_SHA256_AMD64="8df580d2670fed8fa984aac0507099af8df275e665215f5c7a2ae3943893a553"
+readonly GOLANGCI_LINT_SHA256_ARM64="44cd40a8c76c86755375adfeea52cfd3533cb43d7bd647771e0ae065e166df3a"
+
 readonly JUMP_VERSION="0.67.0"
 
 readonly BPFTRACE_APPIMAGE_SHA256_AMD64="17ded991241f8c6c56bf907aab948ef172404ed2a5ea2f0e11f73a7652f3dcc0"
 
 readonly GITHUB_CLI_KEYRING_SHA256="6084d5d7bd8e288441e0e94fc6275570895da18e6751f70f057485dc2d1a811b"
 readonly GITHUB_CLI_KEYRING_URL="https://cli.github.com/packages/githubcli-archive-keyring.gpg"
+
+readonly DOCKER_DOWNLOAD_URL="https://download.docker.com"
 
 readonly MYLINUX_CONFIG_DIR="${HOME}/.config/mylinux"
 
@@ -39,7 +53,7 @@ main() {
 
 usage() {
     cat <<'EOF'
-usage: provision.sh [all|apt|gh|go|jump|bpftrace|bash|git|vim|tmux]
+usage: provision.sh [all|apt|gh|go|nodejs|shfmt|golangci-lint|docker|jump|bpftrace|bash|git|vim|tmux]
 
 With no argument, runs the full provisioning flow.
 EOF
@@ -58,6 +72,18 @@ run_target() {
             ;;
         go)
             install_go
+            ;;
+        node | nodejs)
+            install_nodejs
+            ;;
+        shfmt)
+            install_shfmt
+            ;;
+        golangci | golangci-lint)
+            install_golangci_lint
+            ;;
+        docker)
+            install_docker
             ;;
         jump)
             install_go
@@ -90,6 +116,10 @@ provision_all() {
     install_apt_deps
     install_github_cli
     install_go
+    install_nodejs
+    install_shfmt
+    install_golangci_lint
+    install_docker
     install_jump
     install_bpftrace
     setup_bashrc
@@ -265,6 +295,250 @@ go_sha256() {
             die "unsupported go checksum architecture: $1"
             ;;
     esac
+}
+
+install_nodejs() {
+    local arch
+    local filename
+    local install_dir="/usr/local/nodejs"
+    local sha256
+    local tarball
+    local tmp_dir
+    local url
+
+    if [ -x "${install_dir}/bin/node" ] && [ "$("${install_dir}/bin/node" --version)" = "v${NODE_VERSION}" ]; then
+        log "nodejs ${NODE_VERSION} already installed"
+        return
+    fi
+
+    if command -v node >/dev/null 2>&1 && [ "$(node --version)" = "v${NODE_VERSION}" ]; then
+        log "nodejs ${NODE_VERSION} already installed"
+        return
+    fi
+
+    arch="$(node_arch)"
+    filename="node-v${NODE_VERSION}-linux-${arch}.tar.gz"
+    sha256="$(node_sha256 "$arch")"
+    url="https://nodejs.org/dist/v${NODE_VERSION}/${filename}"
+
+    log "installing nodejs ${NODE_VERSION}"
+    ensure_apt_packages ca-certificates curl
+
+    tmp_dir="$(mktemp -d)"
+    tarball="${tmp_dir}/${filename}"
+
+    curl -fsSL -o "$tarball" "$url"
+    printf '%s  %s\n' "$sha256" "$tarball" | sha256sum -c -
+
+    sudo rm -rf "$install_dir"
+    sudo install -d -m 0755 "$install_dir"
+    sudo tar -C "$install_dir" --strip-components=1 -xzf "$tarball"
+    sudo ln -sfn "${install_dir}/bin/node" /usr/local/bin/node
+    sudo ln -sfn "${install_dir}/bin/npm" /usr/local/bin/npm
+    sudo ln -sfn "${install_dir}/bin/npx" /usr/local/bin/npx
+    sudo ln -sfn "${install_dir}/bin/corepack" /usr/local/bin/corepack
+
+    rm -rf "$tmp_dir"
+}
+
+node_arch() {
+    case "$(uname -m)" in
+        x86_64 | amd64)
+            printf 'x64\n'
+            ;;
+        aarch64 | arm64)
+            printf 'arm64\n'
+            ;;
+        *)
+            die "unsupported nodejs architecture: $(uname -m)"
+            ;;
+    esac
+}
+
+node_sha256() {
+    case "$1" in
+        x64)
+            printf '%s\n' "$NODE_SHA256_X64"
+            ;;
+        arm64)
+            printf '%s\n' "$NODE_SHA256_ARM64"
+            ;;
+        *)
+            die "unsupported nodejs checksum architecture: $1"
+            ;;
+    esac
+}
+
+install_shfmt() {
+    local arch
+    local binary
+    local sha256
+    local tmp
+    local url
+
+    if command -v shfmt >/dev/null 2>&1 && [ "$(shfmt --version)" = "v${SHFMT_VERSION}" ]; then
+        log "shfmt ${SHFMT_VERSION} already installed"
+        return
+    fi
+
+    arch="$(go_arch)"
+    binary="shfmt_v${SHFMT_VERSION}_linux_${arch}"
+    sha256="$(shfmt_sha256 "$arch")"
+    url="https://github.com/mvdan/sh/releases/download/v${SHFMT_VERSION}/${binary}"
+
+    log "installing shfmt ${SHFMT_VERSION}"
+    ensure_apt_packages ca-certificates curl
+
+    tmp="$(mktemp)"
+    curl -fsSL -o "$tmp" "$url"
+    printf '%s  %s\n' "$sha256" "$tmp" | sha256sum -c -
+
+    sudo install -D -m 0755 "$tmp" /usr/local/bin/shfmt
+    rm -f "$tmp"
+}
+
+shfmt_sha256() {
+    case "$1" in
+        amd64)
+            printf '%s\n' "$SHFMT_SHA256_AMD64"
+            ;;
+        arm64)
+            printf '%s\n' "$SHFMT_SHA256_ARM64"
+            ;;
+        *)
+            die "unsupported shfmt checksum architecture: $1"
+            ;;
+    esac
+}
+
+install_golangci_lint() {
+    local arch
+    local dirname
+    local filename
+    local sha256
+    local tarball
+    local tmp_dir
+    local url
+
+    if command -v golangci-lint >/dev/null 2>&1 &&
+        golangci-lint version 2>/dev/null | grep -Fq "version ${GOLANGCI_LINT_VERSION}"; then
+        log "golangci-lint ${GOLANGCI_LINT_VERSION} already installed"
+        return
+    fi
+
+    arch="$(go_arch)"
+    dirname="golangci-lint-${GOLANGCI_LINT_VERSION}-linux-${arch}"
+    filename="${dirname}.tar.gz"
+    sha256="$(golangci_lint_sha256 "$arch")"
+    url="https://github.com/golangci/golangci-lint/releases/download/v${GOLANGCI_LINT_VERSION}/${filename}"
+
+    log "installing golangci-lint ${GOLANGCI_LINT_VERSION}"
+    ensure_apt_packages ca-certificates curl
+
+    tmp_dir="$(mktemp -d)"
+    tarball="${tmp_dir}/${filename}"
+
+    curl -fsSL -o "$tarball" "$url"
+    printf '%s  %s\n' "$sha256" "$tarball" | sha256sum -c -
+    tar -C "$tmp_dir" -xzf "$tarball"
+
+    sudo install -D -m 0755 "${tmp_dir}/${dirname}/golangci-lint" /usr/local/bin/golangci-lint
+    rm -rf "$tmp_dir"
+}
+
+golangci_lint_sha256() {
+    case "$1" in
+        amd64)
+            printf '%s\n' "$GOLANGCI_LINT_SHA256_AMD64"
+            ;;
+        arm64)
+            printf '%s\n' "$GOLANGCI_LINT_SHA256_ARM64"
+            ;;
+        *)
+            die "unsupported golangci-lint checksum architecture: $1"
+            ;;
+    esac
+}
+
+install_docker() {
+    local packages=(
+        containerd.io
+        docker-buildx-plugin
+        docker-ce
+        docker-ce-cli
+        docker-ce-rootless-extras
+        docker-compose-plugin
+        docker-model-plugin
+    )
+
+    log "installing docker"
+    setup_docker_apt_repo
+
+    sudo apt update
+    sudo apt install -y "${packages[@]}"
+
+    if command -v systemctl >/dev/null 2>&1; then
+        sudo systemctl enable --now docker.service
+    fi
+}
+
+setup_docker_apt_repo() {
+    local codename
+    local distribution
+    local keyring="/etc/apt/keyrings/docker.asc"
+    local source_file="/etc/apt/sources.list.d/docker.list"
+    local source_line
+    local tmp
+
+    distribution="$(docker_distribution)"
+    codename="$(docker_codename)"
+    source_line="deb [arch=$(dpkg --print-architecture) signed-by=${keyring}] ${DOCKER_DOWNLOAD_URL}/linux/${distribution} ${codename} stable"
+
+    ensure_apt_packages ca-certificates curl
+
+    tmp="$(mktemp)"
+    curl -fsSL -o "$tmp" "${DOCKER_DOWNLOAD_URL}/linux/${distribution}/gpg"
+
+    sudo install -d -m 0755 /etc/apt/keyrings /etc/apt/sources.list.d
+    sudo install -m 0644 "$tmp" "$keyring"
+    rm -f "$tmp"
+
+    printf '%s\n' "$source_line" | sudo tee "$source_file" >/dev/null
+}
+
+docker_distribution() {
+    local id
+
+    if [ ! -r /etc/os-release ]; then
+        die "cannot detect docker distribution: missing /etc/os-release"
+    fi
+
+    id="$(. /etc/os-release && printf '%s\n' "${ID:-}")"
+    case "$id" in
+        debian | ubuntu)
+            printf '%s\n' "$id"
+            ;;
+        *)
+            die "unsupported docker distribution: $id"
+            ;;
+    esac
+}
+
+docker_codename() {
+    local codename
+
+    codename="$(. /etc/os-release && printf '%s\n' "${VERSION_CODENAME:-}")"
+    if [ -n "$codename" ]; then
+        printf '%s\n' "$codename"
+        return
+    fi
+
+    if command -v lsb_release >/dev/null 2>&1; then
+        lsb_release --codename | cut -f2
+        return
+    fi
+
+    die "cannot detect docker distribution codename"
 }
 
 install_jump() {

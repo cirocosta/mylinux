@@ -64,6 +64,17 @@ main() {
     log "checking installed tools"
     multipass exec "$VM_NAME" -- bash -lc 'gh --version'
     multipass exec "$VM_NAME" -- bash -ic 'go version'
+    multipass exec "$VM_NAME" -- bash -lc 'node --version | grep -Fxq v24.18.0'
+    multipass exec "$VM_NAME" -- bash -lc 'npm --version'
+    multipass exec "$VM_NAME" -- bash -lc 'npx --version'
+    multipass exec "$VM_NAME" -- bash -lc 'corepack --version'
+    multipass exec "$VM_NAME" -- bash -lc 'shfmt --version | grep -Fxq v3.13.1'
+    multipass exec "$VM_NAME" -- bash -lc 'golangci-lint version | grep -Fq "version 2.12.2"'
+    multipass exec "$VM_NAME" -- bash -lc 'sudo systemctl is-active --quiet docker.service'
+    multipass exec "$VM_NAME" -- bash -lc "sudo docker version --format '{{.Server.Version}}'"
+    multipass exec "$VM_NAME" -- bash -lc 'docker compose version'
+    multipass exec "$VM_NAME" -- bash -lc 'docker buildx version'
+    multipass exec "$VM_NAME" -- bash -lc 'containerd --version'
     multipass exec "$VM_NAME" -- bash -lc 'jump --version'
     multipass exec "$VM_NAME" -- bash -lc 'sudo bpftrace --version'
     multipass exec "$VM_NAME" -- bash -lc 'test ! -e /usr/local/bin/bpftrace'
