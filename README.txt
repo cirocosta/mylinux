@@ -1,19 +1,28 @@
 mylinux
 
-        configuration intended to bootstrap an Ubuntu Disco anywhere
+    Bootstrap an Ubuntu machine with my minimal shell and development tools.
 
-        curl -SL https://raw.githubusercontent.com/cirocosta/mylinux/master/provision.sh | bash
+run
 
+    ./provision.sh
 
-steps
+remote run
 
-        - copy `provision.sh` into your system
-        - run it!
+    curl -fsSL https://raw.githubusercontent.com/cirocosta/mylinux/master/provision.sh | bash
 
+vm test
 
-        (vagrant: see `./vagrant/build/Vagrantfile`) for a sample Vagrantfile)
+    ./test-multipass.sh
 
-                ps.: due to a problem with tty on the cloud image for disco
-                dingo, it takes a while for the machine to boot
+    The test harness uses Multipass to launch a real Ubuntu VM, copy the
+    provisioner, run it twice, and check the installed tools. Defaults:
 
+        IMAGE=24.04
+        VM_NAME=mylinux-provision-test
+        CPUS=2
+        MEMORY=4G
+        DISK=20G
 
+    Keep the VM after a run:
+
+        KEEP_VM=1 ./test-multipass.sh
