@@ -10,17 +10,85 @@ readonly GO_SHA256_ARM64="ef758ae7c6cf9267c9c0ef080b8965f453d89ab2d25d9eb22de440
 
 readonly JUMP_VERSION="0.67.0"
 
-readonly BPFTRACE_VERSION="0.26.1"
-readonly BPFTRACE_SHA256_AMD64="17ded991241f8c6c56bf907aab948ef172404ed2a5ea2f0e11f73a7652f3dcc0"
+readonly BPFTRACE_APPIMAGE_SHA256_AMD64="17ded991241f8c6c56bf907aab948ef172404ed2a5ea2f0e11f73a7652f3dcc0"
+
+readonly GITHUB_CLI_KEYRING_SHA256="6084d5d7bd8e288441e0e94fc6275570895da18e6751f70f057485dc2d1a811b"
+readonly GITHUB_CLI_KEYRING_URL="https://cli.github.com/packages/githubcli-archive-keyring.gpg"
 
 readonly MYLINUX_CONFIG_DIR="${HOME}/.config/mylinux"
 
 main() {
+    if [ "$#" -gt 1 ]; then
+        usage >&2
+        exit 2
+    fi
+
+    case "${1:-all}" in
+        -h | --help | help)
+            usage
+            return
+            ;;
+    esac
+
     require_regular_user
     require_cmd sudo
     require_cmd apt
 
+    run_target "${1:-all}"
+}
+
+usage() {
+    cat <<'EOF'
+usage: provision.sh [all|apt|gh|go|jump|bpftrace|bash|git|vim|tmux]
+
+With no argument, runs the full provisioning flow.
+EOF
+}
+
+run_target() {
+    case "$1" in
+        all)
+            provision_all
+            ;;
+        apt)
+            install_apt_deps
+            ;;
+        gh | github-cli)
+            install_github_cli
+            ;;
+        go)
+            install_go
+            ;;
+        jump)
+            install_go
+            install_jump
+            ;;
+        bpftrace)
+            install_bpftrace
+            ;;
+        bash | bashrc)
+            setup_bashrc
+            ;;
+        git | gitconfig)
+            setup_gitconfig
+            ;;
+        vim)
+            setup_vim
+            ;;
+        tmux)
+            setup_tmux
+            ;;
+        *)
+            printf 'error: unknown target: %s\n' "$1" >&2
+            usage >&2
+            exit 2
+            ;;
+    esac
+}
+
+provision_all() {
     install_apt_deps
+    install_github_cli
     install_go
     install_jump
     install_bpftrace
@@ -47,6 +115,25 @@ require_regular_user() {
     if [ "${EUID}" -eq 0 ]; then
         die "run as a regular user with sudo access, not root"
     fi
+}
+
+ensure_apt_packages() {
+    local missing=()
+    local package
+
+    for package in "$@"; do
+        if ! dpkg-query -W -f='${Status}' "$package" 2>/dev/null | grep -Fq 'install ok installed'; then
+            missing+=("$package")
+        fi
+    done
+
+    if [ "${#missing[@]}" -eq 0 ]; then
+        return
+    fi
+
+    log "installing apt prerequisites: ${missing[*]}"
+    sudo apt update
+    sudo apt install -y "${missing[@]}"
 }
 
 install_apt_deps() {
@@ -89,6 +176,31 @@ install_apt_if_available() {
     fi
 }
 
+install_github_cli() {
+    local keyring="/etc/apt/keyrings/githubcli-archive-keyring.gpg"
+    local source_file="/etc/apt/sources.list.d/github-cli.list"
+    local source_line
+    local tmp
+
+    source_line="deb [arch=$(dpkg --print-architecture) signed-by=${keyring}] https://cli.github.com/packages stable main"
+
+    log "installing github cli"
+    ensure_apt_packages ca-certificates curl
+
+    tmp="$(mktemp)"
+    curl -fsSL -o "$tmp" "$GITHUB_CLI_KEYRING_URL"
+    printf '%s  %s\n' "$GITHUB_CLI_KEYRING_SHA256" "$tmp" | sha256sum -c -
+
+    sudo install -d -m 0755 /etc/apt/keyrings /etc/apt/sources.list.d
+    sudo install -m 0644 "$tmp" "$keyring"
+    rm -f "$tmp"
+
+    printf '%s\n' "$source_line" | sudo tee "$source_file" >/dev/null
+
+    sudo apt update
+    sudo apt install -y gh
+}
+
 install_go() {
     local arch
     local filename
@@ -96,6 +208,11 @@ install_go() {
     local tarball
     local tmp_dir
     local url
+
+    if [ -x /usr/local/go/bin/go ] && /usr/local/go/bin/go version | grep -Fq "go${GO_VERSION} "; then
+        log "go ${GO_VERSION} already installed"
+        return
+    fi
 
     if command -v go >/dev/null 2>&1 && go version | grep -Fq "go${GO_VERSION} "; then
         log "go ${GO_VERSION} already installed"
@@ -108,6 +225,8 @@ install_go() {
     url="https://go.dev/dl/${filename}"
 
     log "installing go ${GO_VERSION}"
+    ensure_apt_packages ca-certificates curl
+
     tmp_dir="$(mktemp -d)"
     tarball="${tmp_dir}/${filename}"
 
@@ -160,46 +279,25 @@ install_jump() {
 }
 
 install_bpftrace() {
-    local arch
-    local binary
-    local tmp_dir
+    local installed_binary="/usr/local/bin/bpftrace"
 
-    arch="$(uname -m)"
-    case "$arch" in
-        x86_64 | amd64)
-            ;;
-        *)
-            log "bpftrace release binary unavailable for ${arch}; installing distro package"
-            sudo apt install -y bpftrace
-            return
-            ;;
-    esac
+    log "installing bpftrace"
+    sudo apt update
+    sudo apt install -y bpftrace
 
-    if command -v bpftrace >/dev/null 2>&1 &&
-        bpftrace --version | grep -Fq "v${BPFTRACE_VERSION}"; then
-        log "bpftrace ${BPFTRACE_VERSION} already installed"
-        return
+    if [ -f "$installed_binary" ] &&
+        printf '%s  %s\n' "$BPFTRACE_APPIMAGE_SHA256_AMD64" "$installed_binary" | sha256sum -c - >/dev/null 2>&1; then
+        log "removing previously provisioned bpftrace AppImage"
+        sudo rm -f "$installed_binary"
     fi
-
-    log "installing bpftrace ${BPFTRACE_VERSION}"
-    tmp_dir="$(mktemp -d)"
-    binary="${tmp_dir}/bpftrace"
-
-    curl -fsSL -o "$binary" \
-        "https://github.com/bpftrace/bpftrace/releases/download/v${BPFTRACE_VERSION}/bpftrace"
-    printf '%s  %s\n' "$BPFTRACE_SHA256_AMD64" "$binary" | sha256sum -c -
-
-    sudo install -m 0755 "$binary" /usr/local/bin/bpftrace
-
-    rm -rf "$tmp_dir"
 }
 
 setup_bashrc() {
-    local bashrc="${MYLINUX_CONFIG_DIR}/bashrc"
-    local source_line='[ -f "$HOME/.config/mylinux/bashrc" ] && . "$HOME/.config/mylinux/bashrc"'
+    local bashrc="${HOME}/.bashrc"
 
     log "configuring bash"
     write_file_if_changed "$bashrc" <<'EOF'
+# Managed by mylinux provision.sh.
 [ -z "${PS1:-}" ] && return
 
 shopt -s checkwinsize
@@ -236,8 +334,6 @@ if command -v jump >/dev/null 2>&1; then
     eval "$(jump shell)"
 fi
 EOF
-
-    ensure_line "${HOME}/.bashrc" "$source_line"
 }
 
 setup_gitconfig() {
@@ -286,6 +382,8 @@ setup_tmux() {
 set-window-option -g mode-keys vi
 set -g prefix C-a
 set -g history-limit 10000
+bind-key '"' split-window -v -c "#{pane_current_path}"
+bind-key '%' split-window -h -c "#{pane_current_path}"
 bind-key -T copy-mode-vi 'v' send -X begin-selection
 bind-key -T copy-mode-vi y send-keys -X copy-pipe-and-cancel 'xclip -in -selection clipboard'
 set -g status-style 'bg=colour75,fg=black'

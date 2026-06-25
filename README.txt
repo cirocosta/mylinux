@@ -17,7 +17,7 @@ vm test
     The test harness uses Multipass to launch a real Ubuntu VM, copy the
     provisioner, run it twice, and check the installed tools. Defaults:
 
-        IMAGE=24.04
+        IMAGE=<host Ubuntu VERSION_ID>
         VM_NAME=mylinux-provision-test
         CPUS=2
         MEMORY=4G
