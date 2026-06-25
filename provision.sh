@@ -20,6 +20,14 @@ readonly GOLANGCI_LINT_VERSION="2.12.2"
 readonly GOLANGCI_LINT_SHA256_AMD64="8df580d2670fed8fa984aac0507099af8df275e665215f5c7a2ae3943893a553"
 readonly GOLANGCI_LINT_SHA256_ARM64="44cd40a8c76c86755375adfeea52cfd3533cb43d7bd647771e0ae065e166df3a"
 
+readonly UV_VERSION="0.11.24"
+readonly UV_SHA256_X86_64="5ce1ad074a78f96c5c8122088bb85a12eb282195bc1453151a48762e4fc31fed"
+readonly UV_SHA256_AARCH64="e22c66d36a0098b17cff80a8647e0b8c58202af899d4e9eb820fc7ad126435a1"
+
+readonly RUFF_VERSION="0.15.20"
+readonly RUFF_SHA256_X86_64="df8e74862d4cd4fdac11faf3048789896ff9898a0cacb98497df20d0a1cc7bb4"
+readonly RUFF_SHA256_AARCH64="f915de3ab6d31a49f4c57b1f97129f359f9348c162ea03acfa07011ba79e1197"
+
 readonly JUMP_VERSION="0.67.0"
 
 readonly BPFTRACE_APPIMAGE_SHA256_AMD64="17ded991241f8c6c56bf907aab948ef172404ed2a5ea2f0e11f73a7652f3dcc0"
@@ -53,7 +61,7 @@ main() {
 
 usage() {
     cat <<'EOF'
-usage: provision.sh [all|apt|gh|go|nodejs|shfmt|golangci-lint|docker|jump|bpftrace|bash|git|vim|tmux]
+usage: provision.sh [all|apt|gh|go|nodejs|shfmt|golangci-lint|uv|ruff|docker|jump|bpftrace|bash|git|vim|tmux]
 
 With no argument, runs the full provisioning flow.
 EOF
@@ -81,6 +89,12 @@ run_target() {
             ;;
         golangci | golangci-lint)
             install_golangci_lint
+            ;;
+        uv)
+            install_uv
+            ;;
+        ruff)
+            install_ruff
             ;;
         docker)
             install_docker
@@ -119,6 +133,8 @@ provision_all() {
     install_nodejs
     install_shfmt
     install_golangci_lint
+    install_uv
+    install_ruff
     install_docker
     install_jump
     install_bpftrace
@@ -456,6 +472,120 @@ golangci_lint_sha256() {
             ;;
         *)
             die "unsupported golangci-lint checksum architecture: $1"
+            ;;
+    esac
+}
+
+install_uv() {
+    local arch
+    local dirname
+    local filename
+    local sha256
+    local tarball
+    local tmp_dir
+    local url
+
+    if command -v uv >/dev/null 2>&1 &&
+        command -v uvx >/dev/null 2>&1 &&
+        uv --version | grep -Fq "uv ${UV_VERSION}" &&
+        uvx --version | grep -Fq "uvx ${UV_VERSION}"; then
+        log "uv ${UV_VERSION} already installed"
+        return
+    fi
+
+    arch="$(rust_linux_arch)"
+    dirname="uv-${arch}"
+    filename="${dirname}.tar.gz"
+    sha256="$(uv_sha256 "$arch")"
+    url="https://github.com/astral-sh/uv/releases/download/${UV_VERSION}/${filename}"
+
+    log "installing uv ${UV_VERSION}"
+    ensure_apt_packages ca-certificates curl
+
+    tmp_dir="$(mktemp -d)"
+    tarball="${tmp_dir}/${filename}"
+
+    curl -fsSL -o "$tarball" "$url"
+    printf '%s  %s\n' "$sha256" "$tarball" | sha256sum -c -
+    tar -C "$tmp_dir" -xzf "$tarball"
+
+    sudo install -D -m 0755 "${tmp_dir}/${dirname}/uv" /usr/local/bin/uv
+    sudo install -D -m 0755 "${tmp_dir}/${dirname}/uvx" /usr/local/bin/uvx
+    rm -rf "$tmp_dir"
+}
+
+uv_sha256() {
+    case "$1" in
+        x86_64-unknown-linux-gnu)
+            printf '%s\n' "$UV_SHA256_X86_64"
+            ;;
+        aarch64-unknown-linux-gnu)
+            printf '%s\n' "$UV_SHA256_AARCH64"
+            ;;
+        *)
+            die "unsupported uv checksum architecture: $1"
+            ;;
+    esac
+}
+
+install_ruff() {
+    local arch
+    local dirname
+    local filename
+    local sha256
+    local tarball
+    local tmp_dir
+    local url
+
+    if command -v ruff >/dev/null 2>&1 && [ "$(ruff --version)" = "ruff ${RUFF_VERSION}" ]; then
+        log "ruff ${RUFF_VERSION} already installed"
+        return
+    fi
+
+    arch="$(rust_linux_arch)"
+    dirname="ruff-${arch}"
+    filename="${dirname}.tar.gz"
+    sha256="$(ruff_sha256 "$arch")"
+    url="https://github.com/astral-sh/ruff/releases/download/${RUFF_VERSION}/${filename}"
+
+    log "installing ruff ${RUFF_VERSION}"
+    ensure_apt_packages ca-certificates curl
+
+    tmp_dir="$(mktemp -d)"
+    tarball="${tmp_dir}/${filename}"
+
+    curl -fsSL -o "$tarball" "$url"
+    printf '%s  %s\n' "$sha256" "$tarball" | sha256sum -c -
+    tar -C "$tmp_dir" -xzf "$tarball"
+
+    sudo install -D -m 0755 "${tmp_dir}/${dirname}/ruff" /usr/local/bin/ruff
+    rm -rf "$tmp_dir"
+}
+
+ruff_sha256() {
+    case "$1" in
+        x86_64-unknown-linux-gnu)
+            printf '%s\n' "$RUFF_SHA256_X86_64"
+            ;;
+        aarch64-unknown-linux-gnu)
+            printf '%s\n' "$RUFF_SHA256_AARCH64"
+            ;;
+        *)
+            die "unsupported ruff checksum architecture: $1"
+            ;;
+    esac
+}
+
+rust_linux_arch() {
+    case "$(uname -m)" in
+        x86_64 | amd64)
+            printf 'x86_64-unknown-linux-gnu\n'
+            ;;
+        aarch64 | arm64)
+            printf 'aarch64-unknown-linux-gnu\n'
+            ;;
+        *)
+            die "unsupported rust linux architecture: $(uname -m)"
             ;;
     esac
 }

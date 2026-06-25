@@ -70,6 +70,9 @@ main() {
     multipass exec "$VM_NAME" -- bash -lc 'corepack --version'
     multipass exec "$VM_NAME" -- bash -lc 'shfmt --version | grep -Fxq v3.13.1'
     multipass exec "$VM_NAME" -- bash -lc 'golangci-lint version | grep -Fq "version 2.12.2"'
+    multipass exec "$VM_NAME" -- bash -lc 'uv --version | grep -Fq "uv 0.11.24"'
+    multipass exec "$VM_NAME" -- bash -lc 'uvx --version | grep -Fq "uvx 0.11.24"'
+    multipass exec "$VM_NAME" -- bash -lc 'ruff --version | grep -Fxq "ruff 0.15.20"'
     multipass exec "$VM_NAME" -- bash -lc 'sudo systemctl is-active --quiet docker.service'
     multipass exec "$VM_NAME" -- bash -lc "sudo docker version --format '{{.Server.Version}}'"
     multipass exec "$VM_NAME" -- bash -lc 'docker compose version'
